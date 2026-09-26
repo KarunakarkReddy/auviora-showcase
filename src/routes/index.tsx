@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 import { ArrowUpRight, Menu, X, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -54,7 +54,7 @@ function Navbar() {
   </header>;
 }
 
-function Video({ src, poster, eager = false, className = '', style }: { src: string; poster: string; eager?: boolean; className?: string; style?: React.CSSProperties }) {
+function Video({ src, poster, eager = false, className = '', style }: { src: string; poster: string; eager?: boolean; className?: string; style?: CSSProperties }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [visible, setVisible] = useState(eager);
   const [reduced, setReduced] = useState(false);
