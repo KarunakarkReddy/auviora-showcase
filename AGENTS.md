@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep SLN's public content as editorial sections on the home route and use shared media assets in `src/assets`; this keeps the cinematic sequence cohesive and asset references centralized.
