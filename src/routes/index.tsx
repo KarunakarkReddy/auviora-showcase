@@ -4,8 +4,8 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'mo
 import { ArrowUpRight, Menu, X, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
-import film1 from '@/assets/billboard-1.mp4.asset.json';
-import film2 from '@/assets/billboard-2.mp4.asset.json';
+import film1 from '@/assets/sln-film-1.mp4.asset.json';
+import film2 from '@/assets/sln-film-2.mp4.asset.json';
 import still1 from '@/assets/billboard-1.jpg.asset.json';
 import still2 from '@/assets/billboard-2.jpg.asset.json';
 import still3 from '@/assets/billboard-3.jpg.asset.json';
