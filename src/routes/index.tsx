@@ -76,7 +76,7 @@ function Video({ src, poster, eager = false, className = '' }: { src: string; po
     if (!video) return;
     if (visible && !reduced) video.play().catch(() => {}); else video.pause();
   }, [visible, reduced]);
-  return <video ref={ref} className={className} poster={poster} autoPlay={eager && !reduced} muted loop playsInline preload={eager ? 'metadata' : 'none'} aria-hidden="true">{!reduced && (eager || visible) && <source src={src} type="video/mp4" />}</video>;
+  return <video ref={ref} className={className} src={!reduced && (eager || visible) ? src : undefined} poster={poster} autoPlay={eager && !reduced} muted loop playsInline preload={eager ? 'metadata' : 'none'} aria-hidden="true" />;
 }
 
 function Hero() {
