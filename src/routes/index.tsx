@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import film1 from '@/assets/sln-film-1.webm.asset.json';
 import film2 from '@/assets/sln-film-2.webm.asset.json';
+import film3 from '@/assets/sln-film-3.webm.asset.json';
 import still1 from '@/assets/billboard-1.jpg.asset.json';
 import still2 from '@/assets/billboard-2.jpg.asset.json';
 import still3 from '@/assets/billboard-3.jpg.asset.json';
@@ -25,9 +26,9 @@ export const Route = createFileRoute('/')({
 
 const nav = [['ABOUT', '#about'], ['MEDIA', '#media'], ['SERVICES', '#services'], ['PROJECTS', '#projects'], ['CONTACT', '#contact']];
 const showcase = [
-  { number: '01', title: 'URBAN VISIBILITY', copy: 'Reach audiences where movement happens.', image: still1.url },
-  { number: '02', title: 'HIGH-IMPACT PLACEMENT', copy: 'Built for brands that demand attention.', image: still2.url },
-  { number: '03', title: 'STRATEGIC REACH', copy: 'Your message. Where the city sees it.', image: still3.url },
+  { number: '01', title: 'URBAN VISIBILITY', copy: 'Reach audiences where movement happens.', image: still1.url, video: film1.url },
+  { number: '02', title: 'HIGH-IMPACT PLACEMENT', copy: 'Built for brands that demand attention.', image: still2.url, video: film2.url },
+  { number: '03', title: 'STRATEGIC REACH', copy: 'Your message. Where the city sees it.', image: still3.url, video: film3.url },
   { number: '04', title: 'BUILT FOR IMPACT', copy: 'Large-format media designed to be remembered.', image: still4.url },
 ];
 const services = ['OUTDOOR BILLBOARD ADVERTISING', 'LARGE FORMAT MEDIA', 'ROADSIDES & HIGHWAY MEDIA', 'BRAND CAMPAIGN PLACEMENT', 'MEDIA SPACE MANAGEMENT', 'CUSTOM OUTDOOR CAMPAIGNS'];
@@ -53,7 +54,7 @@ function Navbar() {
   </header>;
 }
 
-function Video({ src, poster, eager = false, className = '' }: { src: string; poster: string; eager?: boolean; className?: string }) {
+function Video({ src, poster, eager = false, className = '', style }: { src: string; poster: string; eager?: boolean; className?: string; style?: React.CSSProperties }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [visible, setVisible] = useState(eager);
   const [reduced, setReduced] = useState(false);
@@ -76,7 +77,7 @@ function Video({ src, poster, eager = false, className = '' }: { src: string; po
     if (!video) return;
     if (visible && !reduced) video.play().catch(() => {}); else video.pause();
   }, [visible, reduced]);
-  return <video ref={ref} className={className} src={!reduced && (eager || visible) ? src : undefined} poster={poster} autoPlay={eager && !reduced} muted loop playsInline preload={eager ? 'metadata' : 'none'} aria-hidden="true" />;
+  return <video ref={ref} className={className} style={style} src={!reduced && (eager || visible) ? src : undefined} poster={poster} autoPlay={eager && !reduced} muted loop playsInline preload={eager ? 'metadata' : 'none'} aria-hidden="true" />;
 }
 
 function Hero() {
@@ -107,7 +108,7 @@ function ShowcasePanel({ item }: { item: typeof showcase[number] }) {
   const scale = useTransform(scrollYProgress, [0, .5, 1], [1.07, 1, 1.05]);
   const y = useTransform(scrollYProgress, [0, 1], ['-4%', '4%']);
   return <section ref={ref} className="showcase-panel" aria-label={item.title}>
-    <motion.img src={item.image} alt={`Outdoor billboard placement illustrating ${item.title.toLowerCase()}`} loading="lazy" style={{ scale, y }} />
+    {item.video ? <motion.div className="panel-media" style={{ scale, y }}><Video src={item.video} poster={item.image} className="panel-video"/></motion.div> : <motion.img src={item.image} alt={`Outdoor billboard placement illustrating ${item.title.toLowerCase()}`} loading="lazy" style={{ scale, y }} />}
     <div className="panel-shade"/>
     <div className="showcase-content"><motion.div {...fade}><div className="panel-kicker"><span>{item.number} / 04</span><span className="panel-rule"/></div><h3 className="display">{item.title}</h3><p>{item.copy}</p></motion.div><ArrowUpRight className="panel-arrow" size={30}/></div>
   </section>;
