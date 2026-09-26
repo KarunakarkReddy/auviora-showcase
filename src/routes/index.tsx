@@ -1,12 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
-import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X, Plus, Minus } from 'lucide-react';
+import { ArrowUpRight, Menu, X, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import film1 from '@/assets/billboard-1.mp4.asset.json';
 import film2 from '@/assets/billboard-2.mp4.asset.json';
-import film3 from '@/assets/billboard-3.mp4.asset.json';
 import still1 from '@/assets/billboard-1.jpg.asset.json';
 import still2 from '@/assets/billboard-2.jpg.asset.json';
 import still3 from '@/assets/billboard-3.jpg.asset.json';
