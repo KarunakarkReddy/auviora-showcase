@@ -244,6 +244,7 @@ img,video { display: block; }
   .led-support, .led-location, .inventory, .company-info { grid-template-columns: 1fr; }
   .led-media { min-height: 62vh; }
   .led-title { left: 22px; right: 22px; bottom: 26px; }
+  .led-title h3 { font-size: clamp(34px, 10vw, 60px); overflow-wrap: anywhere; }
   .led-specs dd { font-size: 14px; }
   .ad-format-row { gap: 30px; flex-direction: column; }
   .company-info dl div, .led-specs dl div { flex-direction: column; gap: 6px; }
