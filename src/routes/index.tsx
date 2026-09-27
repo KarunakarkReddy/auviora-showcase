@@ -11,11 +11,14 @@ import still1 from '@/assets/billboard-1.jpg.asset.json';
 import still2 from '@/assets/billboard-2.jpg.asset.json';
 import still3 from '@/assets/billboard-3.jpg.asset.json';
 import still4 from '@/assets/billboard-4.jpg.asset.json';
+import { companyData, siteNav } from '@/data/company';
+import { adFormats, mediaLocations, nonLedMedia, services } from '@/data/media';
+import { Footer, Wordmark } from '@/components/site-chrome';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
     { title: 'SLN Auviora Media | Outdoor Advertising & Billboard Media' },
-    { name: 'description', content: 'SLN Auviora Media provides premium outdoor advertising and billboard media solutions designed to put brands in high-visibility locations.' },
+    { name: 'description', content: 'SLN Auviora Media provides P5 LED boards, unipoles, holdings and roadside billboard media on Bannerghatta Road, Bengaluru.' },
     { property: 'og:title', content: 'SLN Auviora Media | Outdoor Advertising & Billboard Media' },
     { property: 'og:description', content: 'Premium outdoor advertising and billboard media solutions designed to put brands in high-visibility locations.' },
     { property: 'og:type', content: 'website' },
@@ -24,19 +27,14 @@ export const Route = createFileRoute('/')({
   component: Home,
 });
 
-const nav = [['ABOUT', '#about'], ['MEDIA', '#media'], ['SERVICES', '#services'], ['PROJECTS', '#projects'], ['CONTACT', '#contact']];
+const nav = siteNav;
 const showcase = [
   { number: '01', title: 'URBAN VISIBILITY', copy: 'Reach audiences where movement happens.', image: still1.url, video: film1.url },
   { number: '02', title: 'HIGH-IMPACT PLACEMENT', copy: 'Built for brands that demand attention.', image: still2.url, video: film2.url },
   { number: '03', title: 'STRATEGIC REACH', copy: 'Your message. Where the city sees it.', image: still3.url, video: film3.url },
   { number: '04', title: 'BUILT FOR IMPACT', copy: 'Large-format media designed to be remembered.', image: still4.url },
 ];
-const services = ['OUTDOOR BILLBOARD ADVERTISING', 'LARGE FORMAT MEDIA', 'ROADSIDES & HIGHWAY MEDIA', 'BRAND CAMPAIGN PLACEMENT', 'MEDIA SPACE MANAGEMENT', 'CUSTOM OUTDOOR CAMPAIGNS'];
 const fade = { initial: { opacity: 0, y: 32 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.18 }, transition: { duration: .85, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } };
-
-function Wordmark({ compact = false }: { compact?: boolean }) {
-  return <a href="#top" className={`wordmark ${compact ? 'wordmark-small' : ''}`} aria-label="SLN Auviora Media, back to top"><span className="wordmark-monogram">SLN<span className="wordmark-dot">.</span></span><span className="wordmark-divider"/><span className="wordmark-name">AUVIORA<br/>MEDIA</span></a>;
-}
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -123,26 +121,43 @@ function Experience() {
 }
 
 function Media() {
-  const [active, setActive] = useState(0);
-  const selected = showcase[active];
-  return <section id="media" className="media section-pad"><div className="section-heading"><span className="eyebrow">04 / THE NETWORK</span><motion.h2 {...fade} className="display">OUR <em>MEDIA.</em></motion.h2><p>Strategically positioned advertising spaces built for maximum visibility.</p></div><div className="media-layout"><div className="media-map"><div className="media-map-grid"/><span className="map-north">N ↑</span><div className="map-image"><img src={selected?.image ?? still1.url} alt={`Preview of location ${String(active + 1).padStart(2,'0')} billboard media`} loading="lazy"/></div>{showcase.map((_, i) => <Button key={i} variant="ghost" className={`map-pin map-pin-${i + 1} ${active === i ? 'map-pin-active' : ''}`} onClick={() => setActive(i)} aria-label={`View location ${String(i+1).padStart(2,'0')}`}>{String(i + 1).padStart(2, '0')}</Button>)}<div className="map-caption">SELECT A LOCATION <span>—</span> EXPLORE THE NETWORK</div></div><div className="media-list">{showcase.map((item, i) => <Button key={i} variant="ghost" className={`media-list-item ${active === i ? 'is-active' : ''}`} onClick={() => setActive(i)}><span className="media-list-number">0{i+1}</span><span>LOCATION {String(i+1).padStart(2,'0')}</span><ArrowUpRight size={18}/></Button>)}<div className="media-details"><span className="eyebrow">LOCATION {String(active + 1).padStart(2, '0')} / DETAILS</span><dl><div><dt>FORMAT / SIZE</dt><dd>Details on request</dd></div><div><dt>TRAFFIC / VISIBILITY</dt><dd>Details on request</dd></div><div><dt>AVAILABILITY</dt><dd>Enquire for availability</dd></div></dl><Button asChild variant="ghost" className="text-link"><a href="#contact">ENQUIRE ABOUT THIS SPACE <ArrowUpRight/></a></Button></div></div></div></section>;
+  return <section id="media" className="media section-pad"><div className="section-heading"><span className="eyebrow">04 / LED MEDIA</span><motion.h2 {...fade} className="display">TWO HIGH-RESOLUTION<br/><em>P5 LED BOARDS.</em></motion.h2><p>Premium outdoor LED media positioned for high visibility across major roadside environments.</p></div>
+    <div className="led-support"><motion.p {...fade}>LED displays provide visibility to commuters, vehicles, Metro passengers and pedestrians.</motion.p><motion.p {...fade}>Premium P5 Outdoor SMD LED using high-quality Kinglight Lamps, delivering bright, sharp, and reliable outdoor display performance.</motion.p></div>
+    {mediaLocations.map(loc => <article key={loc.id} className="led-location">
+      <div className="led-media"><Video src={loc.video} poster={loc.poster} className="panel-video"/><div className="panel-shade"/><div className="led-title"><span className="eyebrow">LOCATION {loc.number}</span><h3 className="display">{loc.name}</h3><p>{loc.addressLines.map(l => <span key={l}>{l}<br/></span>)}</p></div></div>
+      <div className="led-specs">{loc.note && <span className="led-note">{loc.note}</span>}<dl>{loc.specs.map(([k, v], i) => <motion.div key={k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08, duration: .7 }}><dt>{k}</dt><dd>{v}</dd></motion.div>)}</dl><Button asChild variant="ghost" className="text-link"><a href="#contact">ENQUIRE ABOUT THIS SPACE <ArrowUpRight/></a></Button></div>
+    </article>)}
+    <div className="ad-formats"><span className="eyebrow">ADVERTISING OPTIONS</span><div className="ad-format-row">{adFormats.map(f => <motion.div {...fade} key={f}><strong className="display">{f.split(' ')[0]}</strong><span>SECOND FORMAT</span></motion.div>)}</div><p>Flexible 10-second and 15-second advertising formats.</p></div>
+  </section>;
+}
+
+function NonLed() {
+  const { roadMedia, unipoles, holdings, area } = nonLedMedia;
+  return <section id="non-led" className="non-led section-pad"><div className="section-heading"><span className="eyebrow">05 / NON-LED MEDIA</span><motion.h2 {...fade} className="display">NON-LED<br/><em>OUTDOOR MEDIA.</em></motion.h2><p>Traditional outdoor advertising formats for high-visibility roadside brand presence.</p><p className="small-meta">{area.join(' · ')}</p></div>
+    <div className="inventory">
+      <div className="inventory-group"><h3>ROAD MEDIA</h3><div className="inventory-item"><span className="display">{roadMedia.measurement}</span><small>MEASUREMENT</small></div><p>{roadMedia.availability}</p></div>
+      <div className="inventory-group"><h3>UNIPOLES</h3>{unipoles.map(u => <motion.div {...fade} className="inventory-item" key={u.size}><span className="display">{u.size}</span><small>{u.sides}</small></motion.div>)}</div>
+      <div className="inventory-group"><h3>HOLDINGS</h3>{holdings.map(h => <div className="inventory-item" key={h.size}><span className="display">{h.size}</span><small>{h.availability}</small></div>)}</div>
+    </div>
+  </section>;
 }
 
 function Services() {
   const [active, setActive] = useState<number | null>(null);
-  return <section id="services" className="services section-pad"><div className="section-heading"><span className="eyebrow">05 / OUR PRACTICE</span><motion.h2 {...fade} className="display">WHAT <em>WE DO.</em></motion.h2></div><div className="services-list">{services.map((item,i) => <div key={item} className={`service-row ${active === i ? 'service-active' : ''}`} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}><span>{String(i+1).padStart(2,'0')}</span><h3>{item}</h3><span className="service-icon">{active === i ? <Minus size={25}/> : <Plus size={25}/>}</span><div className="service-image" style={{ backgroundImage: `url(${showcase[i%4]?.image ?? still1.url})` }}/></div>)}</div></section>;
+  return <section id="services" className="services section-pad"><div className="section-heading"><span className="eyebrow">06 / OUR PRACTICE</span><motion.h2 {...fade} className="display">WHAT <em>WE DO.</em></motion.h2></div><div className="services-list">{services.map((item,i) => <div key={item} className={`service-row ${active === i ? 'service-active' : ''}`} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}><span>{String(i+1).padStart(2,'0')}</span><h3>{item}</h3><span className="service-icon">{active === i ? <Minus size={25}/> : <Plus size={25}/>}</span><div className="service-image" style={{ backgroundImage: `url(${showcase[i%4]?.image ?? still1.url})` }}/></div>)}</div></section>;
 }
 
 function Gallery() {
-  return <section id="projects" className="gallery section-pad"><div className="gallery-header"><div><span className="eyebrow">06 / IN THE FIELD</span><motion.h2 {...fade} className="display">BRANDS<br/><em>BELONG</em><br/>OUT THERE.</motion.h2></div><p>Every street is a stage.<br/>Every journey, an opportunity.</p></div><div className="gallery-grid">{[still1,still2,still3,still4].map((image,i) => <a href="#contact" className={`gallery-image gallery-image-${i+1}`} key={i} aria-label={`Enquire about billboard format ${String(i+1).padStart(2,'0')}`}><img src={image.url} alt={`Outdoor billboard campaign environment ${String(i+1).padStart(2,'0')}`} loading="lazy"/><div className="gallery-overlay"><span>OUTDOOR / 0{i+1}</span><span>EXPLORE OPPORTUNITIES <ArrowUpRight size={19}/></span></div></a>)}</div></section>;
+  return <section id="boardings" className="gallery section-pad"><div className="gallery-header"><div><span className="eyebrow">07 / OUTDOOR BOARDINGS</span><motion.h2 {...fade} className="display">OUTDOOR<br/><em>BOARDINGS.</em></motion.h2></div><p>Large-format hoardings for<br/>roadside brand presence.</p></div><div className="gallery-grid">{[still1,still2,still3,still4].map((image,i) => <a href="#contact" className={`gallery-image gallery-image-${i+1}`} key={i} aria-label={`Enquire about billboard format ${String(i+1).padStart(2,'0')}`}><img src={image.url} alt={`Outdoor billboard campaign environment ${String(i+1).padStart(2,'0')}`} loading="lazy"/><div className="gallery-overlay"><span>OUTDOOR / 0{i+1}</span><span>EXPLORE OPPORTUNITIES <ArrowUpRight size={19}/></span></div></a>)}</div></section>;
 }
 
 function WhyOutdoor() {
-  return <section className="why section-pad"><span className="eyebrow">07 / WHY OUTDOOR</span><div className="why-body"><motion.h2 {...fade} className="display">BUILT FOR<br/><em>THE REAL</em><br/>WORLD.</motion.h2><div className="why-side"><p>Outdoor media connects brands with audiences during everyday movement — on roads, at intersections and across high-visibility urban environments.</p><div className="why-list">{['HIGH VISIBILITY','LARGE FORMAT','REAL-WORLD IMPACT'].map((s,i) => <div key={s}><span>0{i+1}</span><strong>{s}</strong><ArrowUpRight size={18}/></div>)}</div></div></div></section>;
+  const points = [['HIGH-RESOLUTION P5 LED','Premium P5 Outdoor SMD LED displays using high-quality Kinglight Lamps.'],['STRATEGIC ROADSIDE VISIBILITY','Media positioned in outdoor environments where commuters, vehicles, Metro passengers and pedestrians can see advertising.'],['FLEXIBLE AD FORMATS','10-second and 15-second advertising options.'],['EXTENDED DISPLAY HOURS','LED locations offer up to 15 hours of daily playtime according to the supplied media specifications.']];
+  return <section className="why section-pad"><span className="eyebrow">08 / WHY SLN</span><div className="why-body"><motion.h2 {...fade} className="display">BUILT FOR<br/><em>THE REAL</em><br/>WORLD.</motion.h2><div className="why-side"><div className="why-list">{points.map(([t,c],i) => <div key={t} className="why-point"><span>0{i+1}</span><div><strong>{t}</strong><p>{c}</p></div></div>)}</div></div></div></section>;
 }
 
 function About() {
-  return <section id="about" className="about section-pad"><span className="eyebrow">08 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><span className="about-mark">SLN<span>.</span></span><p>SLN Auviora Media Private Limited delivers outdoor advertising solutions through strategically positioned billboard and large-format media spaces.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
+  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><span className="about-mark">SLN<span>.</span></span><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, holdings and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
 }
 
 function Contact() {
@@ -160,11 +175,13 @@ function Contact() {
     });
     if (error) setStatus('error'); else { setStatus('sent'); form.reset(); }
   }
-  return <section id="contact" className="contact section-pad"><div className="contact-top"><span className="eyebrow">09 / GET IN TOUCH</span><span className="small-meta">YOUR NEXT CAMPAIGN STARTS HERE</span></div><div className="contact-layout"><div><motion.h2 {...fade} className="display">LET'S PUT<br/>YOUR BRAND<br/><em>ON THE ROAD.</em></motion.h2><p>Tell us about your campaign and we'll help you identify the right outdoor media opportunity.</p></div><form className="contact-form" onSubmit={submit}><div className="form-pair"><label>NAME <input name="name" type="text" required minLength={2} maxLength={100} placeholder="Your name"/></label><label>COMPANY <input name="company" type="text" required minLength={2} maxLength={160} placeholder="Company name"/></label></div><div className="form-pair"><label>PHONE <input name="phone" type="tel" required minLength={6} maxLength={30} placeholder="Phone number"/></label><label>EMAIL <input name="email" type="email" required maxLength={254} placeholder="Email address"/></label></div><label>CAMPAIGN / REQUIREMENT <input name="requirement" type="text" required minLength={2} maxLength={240} placeholder="Tell us what you have in mind"/></label><label>MESSAGE <textarea name="message" required minLength={5} maxLength={2000} rows={3} placeholder="A little more about your campaign"/></label><div className="form-bottom"><p role="status" aria-live="polite">{status === 'sent' ? 'Thank you. Your enquiry has been received.' : status === 'error' ? 'We couldn’t send your enquiry. Please try again.' : 'We’ll be in touch about your campaign.'}</p><Button type="submit" className="button-gold" disabled={status === 'sending'}>{status === 'sending' ? 'SENDING...' : 'START A CONVERSATION'} <ArrowUpRight/></Button></div></form></div></section>;
+  return <section id="contact" className="contact section-pad"><div className="contact-top"><span className="eyebrow">10 / GET IN TOUCH</span><span className="small-meta">YOUR NEXT CAMPAIGN STARTS HERE</span></div><div className="contact-layout"><div><motion.h2 {...fade} className="display">LET'S PUT<br/>YOUR BRAND<br/><em>ON THE ROAD.</em></motion.h2><p>Tell us about your campaign and we'll help you identify the right outdoor media opportunity.</p><div className="contact-details"><strong>{companyData.name}</strong><a href={`tel:${companyData.mobile}`}>MOBILE · {companyData.mobile}</a><address>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</address><span>GSTIN · {companyData.gstin}</span></div><div className="contact-ctas"><Button asChild className="button-gold"><a href={`tel:${companyData.mobile}`}>CALL NOW <ArrowUpRight/></a></Button><Button asChild variant="outline" className="button-outline"><a href="#enquiry">SEND ENQUIRY <ArrowUpRight/></a></Button></div></div><form id="enquiry" className="contact-form" onSubmit={submit}><div className="form-pair"><label>NAME <input name="name" type="text" required minLength={2} maxLength={100} placeholder="Your name"/></label><label>COMPANY <input name="company" type="text" required minLength={2} maxLength={160} placeholder="Company name"/></label></div><div className="form-pair"><label>PHONE <input name="phone" type="tel" required minLength={6} maxLength={30} placeholder="Phone number"/></label><label>EMAIL <input name="email" type="email" required maxLength={254} placeholder="Email address"/></label></div><label>CAMPAIGN / REQUIREMENT <input name="requirement" type="text" required minLength={2} maxLength={240} placeholder="Tell us what you have in mind"/></label><label>MESSAGE <textarea name="message" required minLength={5} maxLength={2000} rows={3} placeholder="A little more about your campaign"/></label><div className="form-bottom"><p role="status" aria-live="polite">{status === 'sent' ? 'Thank you. Your enquiry has been received.' : status === 'error' ? 'We couldn’t send your enquiry. Please try again.' : 'We’ll be in touch about your campaign.'}</p><Button type="submit" className="button-gold" disabled={status === 'sending'}>{status === 'sending' ? 'SENDING...' : 'START A CONVERSATION'} <ArrowUpRight/></Button></div></form></div></section>;
 }
 
-function Footer() {
-  return <footer className="footer section-pad"><div className="footer-main"><div><Wordmark compact/><p>OUTDOOR MEDIA THAT MOVES WITH THE WORLD.</p></div><div className="footer-links"><span>EXPLORE</span>{nav.map(([name,href]) => <a href={href} key={name}>{name}</a>)}</div><div className="footer-links"><span>CONNECT</span><a href="#contact">CAMPAIGN ENQUIRIES <ArrowUpRight size={14}/></a></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} SLN AUVIORA MEDIA PRIVATE LIMITED</span><a href="#top">BACK TO TOP ↑</a><span>MADE TO BE SEEN.</span></div></footer>;
+function CompanyInfo() {
+  const b = companyData.bank;
+  return <section className="company-info section-pad" aria-label="Company and payment details"><div id="company"><span className="eyebrow">COMPANY DETAILS</span><dl><div><dt>COMPANY</dt><dd>{companyData.name}</dd></div><div><dt>GSTIN</dt><dd>{companyData.gstin}</dd></div><div><dt>REGISTERED / BUSINESS ADDRESS</dt><dd>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</dd></div><div><dt>MOBILE</dt><dd><a href={`tel:${companyData.mobile}`}>{companyData.mobile}</a></dd></div></dl></div>
+    <div id="payment"><span className="eyebrow">PAYMENT DETAILS</span><dl><div><dt>ACCOUNT NAME</dt><dd>{companyData.name}</dd></div><div><dt>BANK</dt><dd>{b.name}</dd></div><div><dt>BRANCH</dt><dd>{b.branch}</dd></div><div><dt>ACCOUNT NO</dt><dd>{b.accountNumber}</dd></div><div><dt>IFSC</dt><dd>{b.ifsc}</dd></div></dl></div></section>;
 }
 
 function CustomCursor() {
@@ -185,5 +202,5 @@ function ScrollProgress() {
 }
 
 function Home() {
-  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><BillboardShowcase/><Experience/><Media/><Services/><Gallery/><WhyOutdoor/><About/><Contact/></main><Footer/></>;
+  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><BillboardShowcase/><Experience/><Media/><NonLed/><Services/><Gallery/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/></>;
 }
