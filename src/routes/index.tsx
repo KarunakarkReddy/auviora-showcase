@@ -121,25 +121,28 @@ function Experience() {
 }
 
 function Media() {
-  return <section id="media" className="media section-pad"><div className="section-heading"><span className="eyebrow">04 / LED MEDIA</span><motion.h2 {...fade} className="display">TWO HIGH-RESOLUTION<br/><em>P5 LED BOARDS.</em></motion.h2><p>Premium outdoor LED media positioned for high visibility across major roadside environments.</p></div>
+  return <section id="media" className="media"><div className="section-pad"><div className="section-heading"><span className="eyebrow">04 / MEDIA</span><motion.h2 {...fade} className="display">MEDIA<span className="media-title-period">.</span></motion.h2></div>
+    <div className="media-subheading"><span className="eyebrow">01 / LED OUTDOOR MEDIA</span><motion.h3 {...fade} className="display">LED OUTDOOR<br/><em>MEDIA.</em></motion.h3><p>High-resolution P5 outdoor LED advertising positioned for high-visibility roadside exposure.</p></div>
     <div className="led-support"><motion.p {...fade}>LED displays provide visibility to commuters, vehicles, Metro passengers and pedestrians.</motion.p><motion.p {...fade}>Premium P5 Outdoor SMD LED using high-quality Kinglight Lamps, delivering bright, sharp, and reliable outdoor display performance.</motion.p></div>
     {mediaLocations.map(loc => <article key={loc.id} className="led-location">
       <div className="led-media"><Video src={loc.video} poster={loc.poster} className="panel-video"/><div className="panel-shade"/><div className="led-title"><span className="eyebrow">LOCATION {loc.number}</span><h3 className="display">{loc.name}</h3><p>{loc.addressLines.map(l => <span key={l}>{l}<br/></span>)}</p></div></div>
       <div className="led-specs">{loc.note && <span className="led-note">{loc.note}</span>}<dl>{loc.specs.map(([k, v], i) => <motion.div key={k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08, duration: .7 }}><dt>{k}</dt><dd>{v}</dd></motion.div>)}</dl><Button asChild variant="ghost" className="text-link"><a href="#contact">ENQUIRE ABOUT THIS SPACE <ArrowUpRight/></a></Button></div>
     </article>)}
-    <div className="ad-formats"><span className="eyebrow">ADVERTISING OPTIONS</span><div className="ad-format-row">{adFormats.map(f => <motion.div {...fade} key={f}><strong className="display">{f.split(' ')[0]}</strong><span>SECOND FORMAT</span></motion.div>)}</div><p>Flexible 10-second and 15-second advertising formats.</p></div>
+    <div className="ad-formats"><span className="eyebrow">ADVERTISING OPTIONS</span><div className="ad-format-row">{adFormats.map(f => <motion.div {...fade} key={f}><strong className="display">{f.split(' ')[0]}</strong><span>SECOND FORMAT</span></motion.div>)}</div><p>Flexible 10-second and 15-second advertising formats.</p></div></div>
+    <NonLed />
   </section>;
 }
 
 function NonLed() {
-  const { roadMedia, unipoles, holdings, area } = nonLedMedia;
-  return <section id="non-led" className="non-led section-pad"><div className="section-heading"><span className="eyebrow">05 / NON-LED MEDIA</span><motion.h2 {...fade} className="display">NON-LED<br/><em>OUTDOOR MEDIA.</em></motion.h2><p>Traditional outdoor advertising formats for high-visibility roadside brand presence.</p><p className="small-meta">{area.join(' · ')}</p></div>
+  const { roadMedia, unipoles, holdings, area, outdoorBoardings } = nonLedMedia;
+  return <div className="non-led section-pad"><div className="media-subheading"><span className="eyebrow">02 / NON-LED OUTDOOR MEDIA</span><motion.h3 {...fade} className="display">NON-LED<br/><em>OUTDOOR MEDIA.</em></motion.h3><p>Traditional outdoor advertising formats designed for high-visibility roadside brand presence.</p></div>
     <div className="inventory">
-      <div className="inventory-group"><h3>ROAD MEDIA</h3><div className="inventory-item"><span className="display">{roadMedia.measurement}</span><small>MEASUREMENT</small></div><p>{roadMedia.availability}</p></div>
-      <div className="inventory-group"><h3>UNIPOLES</h3>{unipoles.map(u => <motion.div {...fade} className="inventory-item" key={u.size}><span className="display">{u.size}</span><small>{u.sides}</small></motion.div>)}</div>
-      <div className="inventory-group"><h3>HOLDINGS</h3>{holdings.map(h => <div className="inventory-item" key={h.size}><span className="display">{h.size}</span><small>{h.availability}</small></div>)}</div>
+      <div className="inventory-group"><h4>ROAD MEDIA</h4><div className="inventory-item"><span className="display">{roadMedia.measurement}</span></div><p>{area[0]}</p></div>
+      <div className="inventory-group"><h4>UNIPOLES</h4>{unipoles.map(u => <motion.div {...fade} className="inventory-item" key={u.size}><span className="display">{u.size}</span><small>{u.sides}</small></motion.div>)}</div>
+      <div className="inventory-group"><h4>HOLDINGS</h4>{holdings.map(h => <div className="inventory-item" key={h.size}><span className="display">{h.size}</span><small>{h.availability}</small></div>)}</div>
+      <div className="inventory-group"><h4>OUTDOOR BOARDINGS</h4><motion.div {...fade} className="inventory-item"><span className="display">{outdoorBoardings.size}</span></motion.div></div>
     </div>
-  </section>;
+  </div>;
 }
 
 function Services() {
@@ -148,7 +151,7 @@ function Services() {
 }
 
 function Gallery() {
-  return <section id="boardings" className="gallery section-pad"><div className="gallery-header"><div><span className="eyebrow">07 / OUTDOOR BOARDINGS</span><motion.h2 {...fade} className="display">OUTDOOR<br/><em>BOARDINGS.</em></motion.h2></div><p>Large-format hoardings for<br/>roadside brand presence.</p></div><div className="gallery-grid">{[still1,still2,still3,still4].map((image,i) => <a href="#contact" className={`gallery-image gallery-image-${i+1}`} key={i} aria-label={`Enquire about billboard format ${String(i+1).padStart(2,'0')}`}><img src={image.url} alt={`Outdoor billboard campaign environment ${String(i+1).padStart(2,'0')}`} loading="lazy"/><div className="gallery-overlay"><span>OUTDOOR / 0{i+1}</span><span>EXPLORE OPPORTUNITIES <ArrowUpRight size={19}/></span></div></a>)}</div></section>;
+  return <section id="gallery" className="gallery section-pad"><div className="gallery-header"><div><span className="eyebrow">05 / GALLERY</span><motion.h2 {...fade} className="display">WHERE BRANDS<br/><em>MEET THE CITY.</em></motion.h2></div><p>Outdoor advertising environments<br/>in motion and in view.</p></div><div className="gallery-grid">{[still1,still2,still3,still4].map((image,i) => <motion.a {...fade} href="#contact" className={`gallery-image gallery-image-${i+1}`} key={i} aria-label={`Enquire about outdoor media shown in gallery image ${String(i+1).padStart(2,'0')}`}><img src={image.url} alt={`Outdoor advertising environment ${String(i+1).padStart(2,'0')}`} loading="lazy"/><div className="gallery-overlay"><span>GALLERY / 0{i+1}</span><span>ENQUIRE ABOUT MEDIA <ArrowUpRight size={19}/></span></div></motion.a>)}</div></section>;
 }
 
 function WhyOutdoor() {
@@ -202,5 +205,5 @@ function ScrollProgress() {
 }
 
 function Home() {
-  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><BillboardShowcase/><Experience/><Media/><NonLed/><Services/><Gallery/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/></>;
+  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><BillboardShowcase/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/></>;
 }
