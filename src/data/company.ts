@@ -17,8 +17,8 @@ export const companyData = {
 export const siteNav = [
   ['HOME', '/#top'],
   ['ABOUT', '/#about'],
-  ['LED MEDIA', '/#media'],
-  ['NON-LED MEDIA', '/#non-led'],
+  ['MEDIA', '/#media'],
+  ['GALLERY', '/#gallery'],
   ['SERVICES', '/#services'],
   ['CONTACT', '/#contact'],
 ] as const;

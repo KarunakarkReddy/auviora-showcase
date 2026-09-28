@@ -45,7 +45,7 @@ export const mediaLocations = [
 ];
 
 export const nonLedMedia = {
-  area: ['Bannerghatta Road', 'Bengaluru - 560083'],
+  area: ['Bannerghatta Road - 560083'],
   roadMedia: { measurement: '2.5 × 5', availability: 'All available road media locations' },
   unipoles: [
     { size: '30 × 30', sides: 'FRONT & BACK' },
@@ -55,6 +55,7 @@ export const nonLedMedia = {
     { size: '25 × 70', sides: 'SINGLE SIDE' },
   ],
   holdings: [{ size: '30 × 30', availability: 'ALL' }],
+  outdoorBoardings: { size: '10 × 50' },
 };
 
 export const services = [
