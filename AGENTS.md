@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep SLN's public content as editorial sections on the home route and use shared media assets in `src/assets`; this keeps the cinematic sequence cohesive and asset references centralized.
+- Keep LED and non-LED inventory as subsections of the single Media section and Gallery as a separate home section; this preserves one coherent booking experience while separating visual examples.
