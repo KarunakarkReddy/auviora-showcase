@@ -12,8 +12,8 @@ import still2 from '@/assets/billboard-2.jpg.asset.json';
 import still3 from '@/assets/billboard-3.jpg.asset.json';
 import still4 from '@/assets/billboard-4.jpg.asset.json';
 import { companyData, siteNav } from '@/data/company';
-import { adFormats, mediaLocations, nonLedMedia, services } from '@/data/media';
-import { Footer, Wordmark } from '@/components/site-chrome';
+import { adFormats, mediaLocations, nonLedMedia, services, upcomingLocations } from '@/data/media';
+import { Footer, WhatsAppButton, Wordmark } from '@/components/site-chrome';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
@@ -80,14 +80,16 @@ function Video({ src, poster, eager = false, className = '', style }: { src: str
 
 function Hero() {
   const reduced = useReducedMotion();
+  const [hideText, setHideText] = useState(false);
+  useEffect(() => { const t = window.setTimeout(() => setHideText(true), 6000); return () => window.clearTimeout(t); }, []);
   return <section className="hero" id="top" aria-label="SLN Auviora Media introduction">
     <Video src={film1.url} poster={still1.url} eager className="hero-video" />
     <div className="hero-shade" />
-    <div className="hero-inner">
-      <motion.p className="eyebrow hero-eyebrow" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .4, duration: .8 }}>OUTDOOR MEDIA, REIMAGINED <span className="eyebrow-rule"/></motion.p>
-      <h1 className="hero-title">{['MAKE YOUR BRAND', 'IMPOSSIBLE', 'TO MISS.'].map((line, i) => <span className="hero-line" key={line}><motion.span initial={reduced ? false : { y: '110%' }} animate={{ y: 0 }} transition={{ delay: .45 + i * .16, duration: 1, ease: [0.22, 1, 0.36, 1] }}>{line}</motion.span></span>)}</h1>
+    <div className={`hero-inner ${hideText ? 'hero-text-hidden' : ''}`}>
+      <motion.p className="eyebrow hero-eyebrow hero-fade-text" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .4, duration: .8 }}>OUTDOOR MEDIA, REIMAGINED <span className="eyebrow-rule"/></motion.p>
+      <h1 className="hero-title hero-fade-text">{['MAKE YOUR BRAND', 'IMPOSSIBLE', 'TO MISS.'].map((line, i) => <span className="hero-line" key={line}><motion.span initial={reduced ? false : { y: '110%' }} animate={{ y: 0 }} transition={{ delay: .45 + i * .16, duration: 1, ease: [0.22, 1, 0.36, 1] }}>{line}</motion.span></span>)}</h1>
       <motion.div className="hero-bottom" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1, duration: .8 }}>
-        <p>Premium Outdoor Advertising<br/>& Billboard Media</p>
+        <p className="hero-fade-text">Premium Outdoor Advertising<br/>& Billboard Media</p>
         <div className="hero-actions"><Button asChild className="button-gold"><a href="#media">EXPLORE OUR MEDIA <ArrowUpRight/></a></Button><Button asChild variant="outline" className="button-outline"><a href="#contact">CONTACT US <ArrowUpRight/></a></Button></div>
       </motion.div>
     </div>
@@ -128,6 +130,7 @@ function Media() {
       <div className="led-media"><Video src={loc.video} poster={loc.poster} className="panel-video"/><div className="panel-shade"/><div className="led-title"><span className="eyebrow">LOCATION {loc.number}</span><h3 className="display">{loc.name}</h3><p>{loc.addressLines.map(l => <span key={l}>{l}<br/></span>)}</p></div></div>
       <div className="led-specs">{loc.note && <span className="led-note">{loc.note}</span>}<dl>{loc.specs.map(([k, v], i) => <motion.div key={k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08, duration: .7 }}><dt>{k}</dt><dd>{v}</dd></motion.div>)}</dl><Button asChild variant="ghost" className="text-link"><a href="#contact">ENQUIRE ABOUT THIS SPACE <ArrowUpRight/></a></Button></div>
     </article>)}
+    <div className="upcoming"><span className="eyebrow">UPCOMING</span><div className="upcoming-list">{upcomingLocations.map((l, i) => <motion.div {...fade} key={l} className="upcoming-item"><span>0{i + 1}</span><h3 className="display">{l}</h3></motion.div>)}</div><p>New outdoor advertising opportunities coming soon.</p></div>
     <div className="ad-formats"><span className="eyebrow">ADVERTISING OPTIONS</span><div className="ad-format-row">{adFormats.map(f => <motion.div {...fade} key={f}><strong className="display">{f.split(' ')[0]}</strong><span>SECOND FORMAT</span></motion.div>)}</div><p>Flexible 10-second and 15-second advertising formats.</p></div></div>
     <NonLed />
   </section>;
@@ -160,7 +163,7 @@ function WhyOutdoor() {
 }
 
 function About() {
-  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><span className="about-mark">SLN<span>.</span></span><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, holdings and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
+  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><span className="about-mark">SLN</span><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, holdings and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
 }
 
 function Contact() {
@@ -205,5 +208,5 @@ function ScrollProgress() {
 }
 
 function Home() {
-  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><BillboardShowcase/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/></>;
+  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><BillboardShowcase/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/><WhatsAppButton/></>;
 }

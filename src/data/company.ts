@@ -3,9 +3,10 @@ export const companyData = {
   shortName: 'SLN AUVIORA MEDIA',
   tagline: 'Premium Outdoor Advertising & LED Media',
   gstin: '29ABUCS7300P1ZE',
-  mobile: '9886123183',
-  addressLines: ['#57 Bannerghatta Road,', 'Kalkere,', 'Kalkere, Bangalore South,', 'Bangalore Rural - 560083,', 'Karnataka, India'],
-  shortLocation: 'Bannerghatta Road, Kalkere, Bengaluru - 560083, Karnataka',
+  mobile: '8951858999',
+  addressLines: ['Bangalore, Karnataka, India'],
+  shortLocation: 'Bangalore, Karnataka, India',
+  whatsapp: 'https://wa.me/918951858999',
   bank: {
     name: 'Axis Bank',
     branch: 'Gottigere Branch',
