@@ -4,6 +4,8 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'mo
 import { ArrowUpRight, Menu, X, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
+import filmMain from '@/assets/sln-film-main.webm.asset.json';
+import stillMain from '@/assets/sln-film-main-poster.jpg.asset.json';
 import film1 from '@/assets/sln-film-1.webm.asset.json';
 import film2 from '@/assets/sln-film-2.webm.asset.json';
 import film3 from '@/assets/sln-film-3.webm.asset.json';
@@ -83,7 +85,7 @@ function Hero() {
   const [hideText, setHideText] = useState(false);
   useEffect(() => { const t = window.setTimeout(() => setHideText(true), 6000); return () => window.clearTimeout(t); }, []);
   return <section className="hero" id="top" aria-label="SLN Auviora Media introduction">
-    <Video src={film1.url} poster={still1.url} eager className="hero-video" />
+    <Video src={filmMain.url} poster={stillMain.url} eager className="hero-video" />
     <div className="hero-shade" />
     <div className={`hero-inner ${hideText ? 'hero-text-hidden' : ''}`}>
       <motion.p className="eyebrow hero-eyebrow hero-fade-text" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .4, duration: .8 }}>OUTDOOR MEDIA, REIMAGINED <span className="eyebrow-rule"/></motion.p>
