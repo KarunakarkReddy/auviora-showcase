@@ -270,3 +270,20 @@ img,video { display: block; }
   .gallery-image-1, .gallery-image-2, .gallery-image-3, .gallery-image-4 { height: auto; aspect-ratio: 4 / 3; margin: 0; }
   .gallery-image-2, .gallery-image-4 { aspect-ratio: 3 / 4; }
 }
+
+/* Hero text auto-hide */
+.hero-fade-text { transition: opacity 1s cubic-bezier(.22,1,.36,1), filter 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1); }
+.hero-text-hidden .hero-fade-text { opacity: 0 !important; filter: blur(8px); transform: translateY(-14px) !important; pointer-events: none; }
+
+/* Upcoming locations */
+.upcoming { margin-top: 110px; padding-top: 40px; border-top: 1px solid color-mix(in oklab, var(--gold) 40%, transparent); }
+.upcoming-list { display: grid; gap: 10px; margin: 40px 0 28px; }
+.upcoming-item { display: flex; align-items: baseline; gap: 28px; }
+.upcoming-item span { color: var(--gold); font-size: 12px; letter-spacing: .2em; }
+.upcoming-item h3 { font-size: clamp(40px, 7vw, 104px); line-height: 1; overflow-wrap: anywhere; }
+.upcoming > p { color: var(--soft); font-size: 15px; }
+
+/* WhatsApp */
+.whatsapp-float { position: fixed; right: 24px; bottom: 24px; z-index: 60; width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: var(--gold); color: var(--background); box-shadow: 0 10px 30px -8px rgb(0 0 0 / .6); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s; }
+.whatsapp-float:hover { transform: scale(1.07); }
+@media (max-width: 767px) { .whatsapp-float { right: 18px; bottom: 18px; width: 52px; height: 52px; } .upcoming { margin-top: 70px; } .upcoming-item { gap: 16px; } }

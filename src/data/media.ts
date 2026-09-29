@@ -1,7 +1,5 @@
 import film1 from '@/assets/sln-film-1.webm.asset.json';
-import film2 from '@/assets/sln-film-2.webm.asset.json';
 import still1 from '@/assets/billboard-1.jpg.asset.json';
-import still2 from '@/assets/billboard-2.jpg.asset.json';
 
 export const adFormats = ['10 Seconds', '15 Seconds'];
 
@@ -18,24 +16,6 @@ export const mediaLocations = [
       ['DISPLAY SIZE', '5760 mm × 5760 mm'],
       ['DISPLAY DIMENSION', '18.89 ft × 18.89 ft'],
       ['RESOLUTION', '1152 × 1152 px'],
-      ['DAILY PLAYTIME', '15 HOURS'],
-      ['MEDIA TYPE', 'P5 Outdoor SMD LED'],
-      ['LAMP TECHNOLOGY', 'High-quality Kinglight Lamps'],
-      ['AD FORMAT', '10 Seconds / 15 Seconds'],
-    ],
-  },
-  {
-    id: 'hommadevanahalli',
-    number: '02',
-    name: 'HOMMADEVANAHALLI',
-    addressLines: ['Narayan Reddy Circle', 'Bus Stop', 'Bengaluru, Karnataka'],
-    video: film2.url,
-    poster: still2.url,
-    // Values shown exactly as supplied by the media owner — do not convert.
-    note: 'SPECIFICATIONS PROVIDED BY MEDIA OWNER',
-    specs: [
-      ['DISPLAY / SIZE INFORMATION', '30m × 30m · 900 × 900 sqft'],
-      ['RESOLUTION', '18.89 ft × 18.89 ft'],
       ['DAILY PLAYTIME', '15 HOURS'],
       ['MEDIA TYPE', 'P5 Outdoor SMD LED'],
       ['LAMP TECHNOLOGY', 'High-quality Kinglight Lamps'],
@@ -66,3 +46,5 @@ export const services = [
   'OUTDOOR BILLBOARD / HOARDING MEDIA',
   'LARGE-FORMAT OUTDOOR ADVERTISING',
 ];
+
+export const upcomingLocations = ['SARJAPURA ROAD', 'KANKAPURA ROAD'];
