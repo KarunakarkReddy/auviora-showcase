@@ -5,5 +5,7 @@
 - [x] Unify LED and non-LED inventory under Media, including text-only Outdoor Boardings.
 - [x] Update navigation and separate cinematic Gallery; switch all site typography to Libre Franklin.
 - [x] Verify navigation, videos, inventory, fonts, and layout on desktop, tablet, and mobile.
-- [ ] Replace temporary wordmark with exact SLN logo when supplied.
+- [x] Replace temporary wordmark with supplied emblem and update the favicon.
 - [x] Add real company contact details when supplied.
+- [x] Place the supplied brand poster once within About and apply the approved palette through shared tokens.
+- [ ] Verify logo placements, poster, colors, and existing navigation across desktop, tablet, and mobile.

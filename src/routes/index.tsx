@@ -13,6 +13,7 @@ import still1 from '@/assets/billboard-1.jpg.asset.json';
 import still2 from '@/assets/billboard-2.jpg.asset.json';
 import still3 from '@/assets/billboard-3.jpg.asset.json';
 import still4 from '@/assets/billboard-4.jpg.asset.json';
+import brandPoster from '@/assets/sln-brand-poster.jpg.asset.json';
 import { companyData, siteNav } from '@/data/company';
 import { adFormats, mediaLocations, nonLedMedia, services, upcomingLocations } from '@/data/media';
 import { Footer, WhatsAppButton, Wordmark } from '@/components/site-chrome';
@@ -165,7 +166,7 @@ function WhyOutdoor() {
 }
 
 function About() {
-  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><span className="about-mark">SLN</span><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, holdings and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
+  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><img className="brand-poster" src={brandPoster.url} alt="SLN Auviora Media blue and cyan brand wordmark" width={1536} height={768} loading="lazy"/><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, holdings and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
 }
 
 function Contact() {
