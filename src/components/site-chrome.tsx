@@ -1,9 +1,10 @@
 import { Link } from '@tanstack/react-router';
 import { ArrowUpRight } from 'lucide-react';
 import { companyData, siteNav } from '@/data/company';
+import emblem from '@/assets/sln-emblem.jpg.asset.json';
 
 export function Wordmark({ compact = false }: { compact?: boolean }) {
-  return <a href="/#top" className={`wordmark ${compact ? 'wordmark-small' : ''}`} aria-label="SLN Auviora Media, back to top"><span className="wordmark-monogram">SLN</span><span className="wordmark-divider"/><span className="wordmark-name">AUVIORA<br/>MEDIA</span></a>;
+  return <a href="/#top" className={`wordmark ${compact ? 'wordmark-small' : ''}`} aria-label="SLN Auviora Media, back to top"><img className="brand-logo" src={emblem.url} alt="SLN Auviora Media emblem" width={454} height={342} fetchPriority={compact ? 'auto' : 'high'}/></a>;
 }
 
 export function WhatsAppButton() {
