@@ -6,9 +6,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import filmMain from '@/assets/sln-film-main.webm.asset.json';
 import stillMain from '@/assets/sln-film-main-poster.jpg.asset.json';
-import film1 from '@/assets/sln-film-1.webm.asset.json';
 import film2 from '@/assets/sln-film-2.webm.asset.json';
-import film3 from '@/assets/sln-film-3.webm.asset.json';
 import still1 from '@/assets/billboard-1.jpg.asset.json';
 import still2 from '@/assets/billboard-2.jpg.asset.json';
 import still3 from '@/assets/billboard-3.jpg.asset.json';
@@ -31,12 +29,7 @@ export const Route = createFileRoute('/')({
 });
 
 const nav = siteNav;
-const showcase = [
-  { number: '01', title: 'URBAN VISIBILITY', copy: 'Reach audiences where movement happens.', image: still1.url, video: film1.url },
-  { number: '02', title: 'HIGH-IMPACT PLACEMENT', copy: 'Built for brands that demand attention.', image: still2.url, video: film2.url },
-  { number: '03', title: 'STRATEGIC REACH', copy: 'Your message. Where the city sees it.', image: still3.url, video: film3.url },
-  { number: '04', title: 'BUILT FOR IMPACT', copy: 'Large-format media designed to be remembered.', image: still4.url },
-];
+const stills = [still1, still2, still3, still4];
 const fade = { initial: { opacity: 0, y: 32 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.18 }, transition: { duration: .85, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } };
 
 function Navbar() {
@@ -105,21 +98,6 @@ function Statement() {
   return <section id="statement" className="statement section-pad"><div className="statement-top"><span className="eyebrow">01 / THE IDEA</span><span className="small-meta">THE WORLD IS YOUR CANVAS</span></div><div className="statement-center"><motion.h2 {...fade} className="display statement-title">WE TURN ROADS<br/><em>INTO BRAND</em><br/>EXPERIENCES.</motion.h2><motion.p {...fade}>Outdoor advertising designed for visibility, scale and impact.</motion.p></div><span className="statement-cross">✳</span></section>;
 }
 
-function ShowcasePanel({ item }: { item: typeof showcase[number] }) {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const scale = useTransform(scrollYProgress, [0, .5, 1], [1.07, 1, 1.05]);
-  const y = useTransform(scrollYProgress, [0, 1], ['-4%', '4%']);
-  return <section ref={ref} className="showcase-panel" aria-label={item.title}>
-    {item.video ? <motion.div className="panel-media" style={{ scale, y }}><Video src={item.video} poster={item.image} className="panel-video"/></motion.div> : <motion.img src={item.image} alt={`Outdoor billboard placement illustrating ${item.title.toLowerCase()}`} loading="lazy" style={{ scale, y }} />}
-    <div className="panel-shade"/>
-    <div className="showcase-content"><motion.div {...fade}><div className="panel-kicker"><span>{item.number} / 04</span><span className="panel-rule"/></div><h3 className="display">{item.title}</h3><p>{item.copy}</p></motion.div><ArrowUpRight className="panel-arrow" size={30}/></div>
-  </section>;
-}
-
-function BillboardShowcase() {
-  return <div className="showcase" id="showcase"><div className="section-intro section-pad"><span className="eyebrow">02 / THE PRESENCE</span><motion.h2 {...fade} className="display">A bigger<br/><em>point of view.</em></motion.h2><p>Not just seen. Remembered.</p></div>{showcase.map(item => <ShowcasePanel key={item.number} item={item}/>)}</div>;
-}
 
 function Experience() {
   return <section className="experience" aria-label="Outdoor media experience"><Video src={film2.url} poster={still2.url} className="experience-video"/><div className="experience-shade"/><div className="experience-content section-pad"><span className="eyebrow">03 / THE EXPERIENCE</span><motion.h2 {...fade} className="display">VISIBILITY<br/><em>WITHOUT</em><br/>INTERRUPTION.</motion.h2><motion.p {...fade} className="experience-quote">Your audience is already on the road.<br/>We put your brand in their path.</motion.p><div className="experience-features">{[['01','HIGH VISIBILITY','Strategic roadside placements.'],['02','LARGE FORMAT','Advertising that commands attention.'],['03','REAL-WORLD REACH','Brand exposure across high-traffic environments.']].map(([n,t,c]) => <motion.div {...fade} key={n} className="experience-feature"><span>{n}</span><h3>{t}</h3><p>{c}</p></motion.div>)}</div></div></section>;
@@ -197,7 +175,7 @@ function CustomCursor() {
   const [point, setPoint] = useState({ x: -100, y: -100 });
   const [mode, setMode] = useState('');
   useEffect(() => {
-    const move = (e: MouseEvent) => { setPoint({ x: e.clientX, y: e.clientY }); const target = e.target as HTMLElement; setMode(target.closest('.gallery-image, .showcase-panel') ? 'VIEW' : target.closest('a, button') ? 'OPEN' : ''); };
+    const move = (e: MouseEvent) => { setPoint({ x: e.clientX, y: e.clientY }); const target = e.target as HTMLElement; setMode(target.closest('.gallery-image, .led-media') ? 'VIEW' : target.closest('a, button') ? 'OPEN' : ''); };
     window.addEventListener('mousemove', move);
     return () => window.removeEventListener('mousemove', move);
   }, []);
@@ -211,5 +189,5 @@ function ScrollProgress() {
 }
 
 function Home() {
-  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><BillboardShowcase/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/></>;
+  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/></>;
 }
