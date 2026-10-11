@@ -16,7 +16,7 @@ import still4 from '@/assets/billboard-4.jpg.asset.json';
 import brandPoster from '@/assets/sln-brand-poster.jpg.asset.json';
 import { companyData, siteNav } from '@/data/company';
 import { adFormats, mediaLocations, nonLedMedia, services, upcomingLocations } from '@/data/media';
-import { Footer, WhatsAppButton, Wordmark } from '@/components/site-chrome';
+import { Footer, Wordmark } from '@/components/site-chrome';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
@@ -211,5 +211,5 @@ function ScrollProgress() {
 }
 
 function Home() {
-  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><BillboardShowcase/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/><WhatsAppButton/></>;
+  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><BillboardShowcase/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/></>;
 }
