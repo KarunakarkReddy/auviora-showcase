@@ -95,9 +95,15 @@ function Hero() {
 }
 
 function Statement() {
-  return <section id="statement" className="statement section-pad"><div className="statement-top"><span className="eyebrow">01 / THE IDEA</span><span className="small-meta">THE WORLD IS YOUR CANVAS</span></div><div className="statement-center"><motion.h2 {...fade} className="display statement-title">WE TURN ROADS<br/><em>INTO BRAND</em><br/>EXPERIENCES.</motion.h2><motion.p {...fade}>Outdoor advertising designed for visibility, scale and impact.</motion.p></div><span className="statement-cross">✳</span></section>;
+  return <section id="statement" className="statement section-pad"><div className="statement-top"><span className="eyebrow">01 / THE IDEA</span><span className="small-meta">THE WORLD IS YOUR CANVAS</span></div><div className="statement-center"><motion.h2 {...fade} className="display statement-title">WE TURN ROADS<br/><em>INTO BRAND</em><br/>EXPERIENCES.</motion.h2><motion.p {...fade}>Outdoor advertising designed for visibility, scale and impact.</motion.p><BrandMarquee/></div><span className="statement-cross">✳</span></section>;
 }
 
+
+const marqueeBrands = ['UrbanEdge Retail', 'Horizon Foods', 'StyleZone', 'TechVibe', 'Namma Motors', 'Brigade Group', 'Royal Enfield', 'Decathlon'];
+function BrandMarquee() {
+  const row = (hidden: boolean) => <ul className="marquee-row" aria-hidden={hidden || undefined}>{marqueeBrands.map(b => <li key={b}>{b}<span className="marquee-sep" aria-hidden="true">✦</span></li>)}</ul>;
+  return <div className="brand-marquee"><p className="marquee-heading">Brands and businesses that inspire us</p><div className="marquee-viewport"><div className="marquee-track" style={{ '--marquee-duration': '46s' } as CSSProperties}>{row(false)}{row(true)}</div></div></div>;
+}
 
 function Experience() {
   return <section className="experience" aria-label="Outdoor media experience"><Video src={film2.url} poster={still2.url} className="experience-video"/><div className="experience-shade"/><div className="experience-content section-pad"><span className="eyebrow">03 / THE EXPERIENCE</span><motion.h2 {...fade} className="display">VISIBILITY<br/><em>WITHOUT</em><br/>INTERRUPTION.</motion.h2><motion.p {...fade} className="experience-quote">Your audience is already on the road.<br/>We put your brand in their path.</motion.p><div className="experience-features">{[['01','HIGH VISIBILITY','Strategic roadside placements.'],['02','LARGE FORMAT','Advertising that commands attention.'],['03','REAL-WORLD REACH','Brand exposure across high-traffic environments.']].map(([n,t,c]) => <motion.div {...fade} key={n} className="experience-feature"><span>{n}</span><h3>{t}</h3><p>{c}</p></motion.div>)}</div></div></section>;
@@ -112,7 +118,8 @@ function Media() {
       <div className="led-specs">{loc.note && <span className="led-note">{loc.note}</span>}<dl>{loc.specs.map(([k, v], i) => <motion.div key={k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08, duration: .7 }}><dt>{k}</dt><dd>{v}</dd></motion.div>)}</dl><Button asChild variant="ghost" className="text-link"><a href="#contact">ENQUIRE ABOUT THIS SPACE <ArrowUpRight/></a></Button></div>
     </article>)}
     <div className="upcoming"><span className="eyebrow">UPCOMING</span><div className="upcoming-list">{upcomingLocations.map((l, i) => <motion.div {...fade} key={l} className="upcoming-item"><span>0{i + 1}</span><h3 className="display">{l}</h3></motion.div>)}</div><p>New outdoor advertising opportunities coming soon.</p></div>
-    <div className="ad-formats"><span className="eyebrow">ADVERTISING OPTIONS</span><div className="ad-format-row">{adFormats.map(f => <motion.div {...fade} key={f}><strong className="display">{f.split(' ')[0]}</strong><span>SECOND FORMAT</span></motion.div>)}</div><p>Flexible 10-second and 15-second advertising formats.</p></div></div>
+    <div className="ad-formats"><span className="eyebrow">ADVERTISING OPTIONS</span><div className="ad-format-row">{adFormats.map(f => <motion.div {...fade} key={f}><strong className="display">{f.split(' ')[0]}</strong><span>SECOND FORMAT</span></motion.div>)}</div><p>Flexible 10-second and 15-second advertising formats.</p></div>
+    <div className="led-timings"><span className="eyebrow">LED DISPLAY TIMINGS</span><dl><div><dt>MORNING SESSION</dt><dd>7:00 AM – 1:00 PM</dd></div><div><dt>AFTERNOON / EVENING SESSION</dt><dd>2:00 PM – 10:00 PM</dd></div><div><dt>PLAYBACK FREQUENCY</dt><dd>Approx. once every minute</dd></div></dl><p>Scheduled across 14 display hours, with a break from 1:00 PM to 2:00 PM. Your brand stays in rotation throughout our scheduled display hours, giving your campaign repeated visibility to commuters and pedestrians.</p></div></div>
     <NonLed />
   </section>;
 }
