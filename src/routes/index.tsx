@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
-import { ArrowUpRight, Menu, X, Plus, Minus } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, Menu, X, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import filmMain from '@/assets/sln-film-main.webm.asset.json';
@@ -147,7 +147,17 @@ function Services() {
 }
 
 function Gallery() {
-  return <section id="gallery" className="gallery section-pad"><div className="gallery-header"><div><span className="eyebrow">05 / GALLERY</span><motion.h2 {...fade} className="display">WHERE BRANDS<br/><em>MEET THE CITY.</em></motion.h2></div><p>Outdoor advertising environments<br/>in motion and in view.</p></div><div className="gallery-grid">{[still1,still2,still3,still4].map((image,i) => <motion.a {...fade} href="#contact" className={`gallery-image gallery-image-${i+1}`} key={i} aria-label={`Enquire about outdoor media shown in gallery image ${String(i+1).padStart(2,'0')}`}><img src={image.url} alt={`Outdoor advertising environment ${String(i+1).padStart(2,'0')}`} loading="lazy"/><div className="gallery-overlay"><span>GALLERY / 0{i+1}</span><span>ENQUIRE ABOUT MEDIA <ArrowUpRight size={19}/></span></div></motion.a>)}</div></section>;
+  const [index, setIndex] = useState(0);
+  const timer = useRef<number | undefined>(undefined);
+  const reduced = useReducedMotion();
+  const count = stills.length;
+  const startTimer = () => {
+    window.clearInterval(timer.current);
+    if (!reduced) timer.current = window.setInterval(() => setIndex(i => (i + 1) % count), 3000);
+  };
+  useEffect(() => { startTimer(); return () => window.clearInterval(timer.current); }, [reduced, count]);
+  const step = (dir: number) => { setIndex(i => (i + dir + count) % count); startTimer(); };
+  return <section id="gallery" className="gallery section-pad"><div className="gallery-header"><div><span className="eyebrow">05 / GALLERY</span><motion.h2 {...fade} className="display">WHERE BRANDS<br/><em>MEET THE CITY.</em></motion.h2></div><p>Outdoor advertising environments<br/>in motion and in view.</p></div><div className="gallery-stage"><div className="gallery-image"><img key={index} className="gallery-fade" src={stills[index].url} alt={`Outdoor advertising environment ${String(index + 1).padStart(2, '0')} of ${String(count).padStart(2, '0')}`}/><button type="button" className="gallery-arrow gallery-prev" aria-label="Previous image" onClick={() => step(-1)}><ChevronLeft size={26}/></button><button type="button" className="gallery-arrow gallery-next" aria-label="Next image" onClick={() => step(1)}><ChevronRight size={26}/></button></div><p className="gallery-counter" aria-live="polite">{String(index + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</p></div></section>;
 }
 
 function WhyOutdoor() {
