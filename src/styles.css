@@ -232,7 +232,7 @@ img,video { display: block; }
 .contact-details a { color: var(--link); font-weight: 600; letter-spacing: .08em; }
 .contact-details address { font-style: normal; }
 .contact-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
-.company-info { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; background: var(--secondary); border-top: 1px solid var(--border); }
+.company-info { display: grid; grid-template-columns: minmax(0, 720px); gap: 6vw; background: var(--secondary); border-top: 1px solid var(--border); }
 .company-info dl { margin: 24px 0 0; }
 .company-info dl div { display: flex; justify-content: space-between; gap: 20px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
 .company-info dt { font-size: 10px; letter-spacing: .14em; color: var(--soft); }
