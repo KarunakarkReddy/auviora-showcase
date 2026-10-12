@@ -131,7 +131,7 @@ function NonLed() {
 
 function Services() {
   const [active, setActive] = useState<number | null>(null);
-  return <section id="services" className="services section-pad"><div className="section-heading"><span className="eyebrow">06 / OUR PRACTICE</span><motion.h2 {...fade} className="display">WHAT <em>WE DO.</em></motion.h2></div><div className="services-list">{services.map((item,i) => <div key={item} className={`service-row ${active === i ? 'service-active' : ''}`} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}><span>{String(i+1).padStart(2,'0')}</span><h3>{item}</h3><span className="service-icon">{active === i ? <Minus size={25}/> : <Plus size={25}/>}</span><div className="service-image" style={{ backgroundImage: `url(${showcase[i%4]?.image ?? still1.url})` }}/></div>)}</div></section>;
+  return <section id="services" className="services section-pad"><div className="section-heading"><span className="eyebrow">06 / OUR PRACTICE</span><motion.h2 {...fade} className="display">WHAT <em>WE DO.</em></motion.h2></div><div className="services-list">{services.map((item,i) => <div key={item} className={`service-row ${active === i ? 'service-active' : ''}`} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}><span>{String(i+1).padStart(2,'0')}</span><h3>{item}</h3><span className="service-icon">{active === i ? <Minus size={25}/> : <Plus size={25}/>}</span><div className="service-image" style={{ backgroundImage: `url(${stills[i%4]?.url ?? still1.url})` }}/></div>)}</div></section>;
 }
 
 function Gallery() {
