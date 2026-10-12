@@ -102,7 +102,7 @@ function Statement() {
 const marqueeBrands = ['UrbanEdge Retail', 'Horizon Foods', 'StyleZone', 'TechVibe', 'Namma Motors', 'Brigade Group', 'Royal Enfield', 'Decathlon'];
 function BrandMarquee() {
   const row = (hidden: boolean) => <ul className="marquee-row" aria-hidden={hidden || undefined}>{marqueeBrands.map(b => <li key={b}>{b}<span className="marquee-sep" aria-hidden="true">✦</span></li>)}</ul>;
-  return <div className="brand-marquee"><p className="marquee-heading">Brands and businesses that inspire us</p><div className="marquee-viewport"><div className="marquee-track" style={{ '--marquee-duration': '46s' } as CSSProperties}>{row(false)}{row(true)}</div></div></div>;
+  return <div className="brand-marquee"><p className="marquee-heading">Trusted by ambitious brands across India</p><div className="marquee-viewport"><div className="marquee-track" style={{ '--marquee-duration': '46s' } as CSSProperties}>{row(false)}{row(true)}</div></div></div>;
 }
 
 function Experience() {
@@ -128,10 +128,15 @@ function NonLed() {
   const { roadMedia, unipoles, holdings, area, outdoorBoardings } = nonLedMedia;
   return <div className="non-led section-pad"><div className="media-subheading"><span className="eyebrow">02 / NON-LED OUTDOOR MEDIA</span><motion.h3 {...fade} className="display">NON-LED<br/><em>OUTDOOR MEDIA.</em></motion.h3><p>Traditional outdoor advertising formats designed for high-visibility roadside brand presence.</p></div>
     <div className="inventory">
-      <div className="inventory-group"><h4>ROAD MEDIA</h4><div className="inventory-item"><span className="display">{roadMedia.measurement}</span></div><p>{area[0]}</p></div>
-      <div className="inventory-group"><h4>UNIPOLES</h4>{unipoles.map(u => <motion.div {...fade} className="inventory-item" key={u.size}><span className="display">{u.size}</span><small>{u.sides}</small></motion.div>)}</div>
-      <div className="inventory-group"><h4>HOLDINGS</h4>{holdings.map(h => <div className="inventory-item" key={h.size}><span className="display">{h.size}</span><small>{h.availability}</small></div>)}</div>
-      <div className="inventory-group"><h4>OUTDOOR BOARDINGS</h4><motion.div {...fade} className="inventory-item"><span className="display">{outdoorBoardings.size}</span></motion.div></div>
+      {[
+        { title: 'ROAD MEDIA', body: <><div className="inventory-item"><span className="display">{roadMedia.measurement}</span></div><p>{area[0]}</p></> },
+        { title: 'UNIPOLES', body: unipoles.map(u => <div className="inventory-item" key={u.size}><span className="display">{u.size}</span><small>{u.sides}</small></div>) },
+        { title: 'HOLDINGS', body: holdings.map(h => <div className="inventory-item" key={h.size}><span className="display">{h.size}</span><small>{h.availability}</small></div>) },
+        { title: 'OUTDOOR BOARDINGS', body: <div className="inventory-item"><span className="display">{outdoorBoardings.size}</span></div> },
+      ].map((c, i) => <motion.article {...fade} className="inventory-group" key={c.title}>
+        <div className="inventory-image" role="img" aria-label={`${c.title} photograph coming soon`}><span>0{i + 1}</span><small>PHOTOGRAPH COMING SOON</small></div>
+        <div className="inventory-content"><h4>{c.title}</h4>{c.body}</div>
+      </motion.article>)}
     </div>
   </div>;
 }
@@ -173,9 +178,7 @@ function Contact() {
 }
 
 function CompanyInfo() {
-  const b = companyData.bank;
-  return <section className="company-info section-pad" aria-label="Company and payment details"><div id="company"><span className="eyebrow">COMPANY DETAILS</span><dl><div><dt>COMPANY</dt><dd>{companyData.name}</dd></div><div><dt>GSTIN</dt><dd>{companyData.gstin}</dd></div><div><dt>REGISTERED / BUSINESS ADDRESS</dt><dd>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</dd></div><div><dt>MOBILE</dt><dd><a href={`tel:${companyData.mobile}`}>{companyData.mobile}</a></dd></div></dl></div>
-    <div id="payment"><span className="eyebrow">PAYMENT DETAILS</span><dl><div><dt>ACCOUNT NAME</dt><dd>{companyData.name}</dd></div><div><dt>BANK</dt><dd>{b.name}</dd></div><div><dt>BRANCH</dt><dd>{b.branch}</dd></div><div><dt>ACCOUNT NO</dt><dd>{b.accountNumber}</dd></div><div><dt>IFSC</dt><dd>{b.ifsc}</dd></div></dl></div></section>;
+  return <section className="company-info section-pad" aria-label="Company details"><div id="company"><span className="eyebrow">COMPANY DETAILS</span><dl><div><dt>COMPANY</dt><dd>{companyData.name}</dd></div><div><dt>GSTIN</dt><dd>{companyData.gstin}</dd></div><div><dt>REGISTERED / BUSINESS ADDRESS</dt><dd>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</dd></div><div><dt>MOBILE</dt><dd><a href={`tel:${companyData.mobile}`}>{companyData.mobile}</a></dd></div></dl></div></section>;
 }
 
 function CustomCursor() {

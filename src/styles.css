@@ -305,7 +305,7 @@ img,video { display: block; }
 .marquee-track { display: flex; width: max-content; animation: marquee var(--marquee-duration, 46s) linear infinite; }
 .marquee-viewport:hover .marquee-track { animation-play-state: paused; }
 .marquee-row { display: flex; flex-shrink: 0; list-style: none; margin: 0; padding: 0; white-space: nowrap; }
-.marquee-row li { font-size: clamp(18px, 2vw, 28px); font-weight: 300; color: var(--foreground); letter-spacing: .04em; display: flex; align-items: center; }
+.marquee-row li { font-size: clamp(30px, 4vw, 56px); line-height: 1.3; padding: 8px 0; font-weight: 300; color: var(--foreground); letter-spacing: .04em; display: flex; align-items: center; }
 .marquee-sep { color: var(--gold); font-size: .6em; margin: 0 clamp(20px, 3vw, 44px); }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none !important; width: auto; justify-content: center; } .marquee-row { flex-wrap: wrap; justify-content: center; white-space: normal; row-gap: 12px; } .marquee-row[aria-hidden] { display: none; } .marquee-viewport { mask-image: none; } }
@@ -315,3 +315,10 @@ img,video { display: block; }
 .led-timings dd { margin: 0; font-size: clamp(20px, 2.2vw, 30px); color: var(--foreground); }
 .led-timings > p { color: var(--soft); font-size: 15px; line-height: 1.7; max-width: 640px; }
 @media (max-width: 768px) { .led-timings dl { grid-template-columns: 1fr; gap: 22px; } .brand-marquee { margin-top: 56px; } }
+
+.inventory { display: flex !important; flex-direction: column; gap: 0; }
+.inventory-group { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 5vw; align-items: center; padding: 70px 0; border-top: 1px solid var(--border); }
+.inventory-image { aspect-ratio: 16 / 10; border: 1px solid var(--border); border-radius: 6px; background: linear-gradient(135deg, var(--accent), var(--background)); display: flex; flex-direction: column; justify-content: space-between; padding: 24px; }
+.inventory-image span { font-size: 13px; letter-spacing: .2em; color: var(--gold); }
+.inventory-image small { font-size: 10px; letter-spacing: .22em; color: var(--soft); }
+@media (max-width: 768px) { .inventory-group { grid-template-columns: 1fr; gap: 28px; padding: 48px 0; } .marquee-row li { font-size: clamp(26px, 7vw, 36px); } }

@@ -7,12 +7,6 @@ export const companyData = {
   addressLines: ['Bangalore, Karnataka, India'],
   shortLocation: 'Bangalore, Karnataka, India',
   whatsapp: 'https://wa.me/918951858999',
-  bank: {
-    name: 'Axis Bank',
-    branch: 'Gottigere Branch',
-    accountNumber: '926020018544737',
-    ifsc: 'UTIB0004071',
-  },
 };
 
 export const siteNav = [
