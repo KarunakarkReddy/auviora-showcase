@@ -299,3 +299,19 @@ img,video { display: block; }
 .contact-float-wa:hover { background: #1EBE5A; }
 .contact-float:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 @media (max-width: 767px) { .contact-float-bar { right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); gap: 12px; } .contact-float { width: 48px; height: 48px; } .upcoming { margin-top: 70px; } .upcoming-item { gap: 16px; } }
+.brand-marquee { margin-top: 80px; }
+.marquee-heading { font-size: 12px !important; letter-spacing: .22em; text-transform: uppercase; color: var(--soft); margin: 0 auto 28px !important; }
+.marquee-viewport { overflow: hidden; max-width: 100%; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.marquee-track { display: flex; width: max-content; animation: marquee var(--marquee-duration, 46s) linear infinite; }
+.marquee-viewport:hover .marquee-track { animation-play-state: paused; }
+.marquee-row { display: flex; flex-shrink: 0; list-style: none; margin: 0; padding: 0; white-space: nowrap; }
+.marquee-row li { font-size: clamp(18px, 2vw, 28px); font-weight: 300; color: var(--foreground); letter-spacing: .04em; display: flex; align-items: center; }
+.marquee-sep { color: var(--gold); font-size: .6em; margin: 0 clamp(20px, 3vw, 44px); }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none !important; width: auto; justify-content: center; } .marquee-row { flex-wrap: wrap; justify-content: center; white-space: normal; row-gap: 12px; } .marquee-row[aria-hidden] { display: none; } .marquee-viewport { mask-image: none; } }
+.led-timings { border-top: 1px solid var(--border); padding-top: 50px; margin-top: 60px; }
+.led-timings dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 30px 0; }
+.led-timings dt { font-size: 11px; letter-spacing: .18em; color: var(--gold); margin-bottom: 10px; }
+.led-timings dd { margin: 0; font-size: clamp(20px, 2.2vw, 30px); color: var(--foreground); }
+.led-timings > p { color: var(--soft); font-size: 15px; line-height: 1.7; max-width: 640px; }
+@media (max-width: 768px) { .led-timings dl { grid-template-columns: 1fr; gap: 22px; } .brand-marquee { margin-top: 56px; } }
