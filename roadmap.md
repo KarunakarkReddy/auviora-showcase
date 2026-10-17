@@ -9,3 +9,8 @@
 - [x] Add real company contact details when supplied.
 - [x] Place the supplied brand poster once within About and apply the approved palette through shared tokens.
 - [x] Verify logo placements, poster, colors, and existing navigation across desktop, tablet, and mobile.
+- [x] Inspect the existing project and assets for styling conflicts.
+- [x] Restore monochrome tokens, logo presentation, scoped button/cursor states, and contact form contrast.
+- [x] Consolidate conflicting CSS while preserving layout, content, and interactions.
+- [x] Verify desktop/tablet/mobile layout, media playback, hover states, gallery timer, navigation, and form validation; preview build/typecheck passes.
+- [x] Exercise preserved contact submission: the existing form displays its sending-error state; submission success is not verified, and backend behavior was left unchanged for this styling-only task.

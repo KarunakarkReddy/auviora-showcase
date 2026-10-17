@@ -4,7 +4,7 @@ import { companyData, siteNav } from '@/data/company';
 import emblem from '@/assets/sln-emblem.jpg.asset.json';
 
 export function Wordmark({ compact = false }: { compact?: boolean }) {
-  return <a href="/#top" className={`wordmark ${compact ? 'wordmark-small' : ''}`} aria-label="SLN Auviora Media, back to top"><img className="brand-logo" src={emblem.url} alt="SLN Auviora Media emblem" width={454} height={342} fetchPriority={compact ? 'auto' : 'high'}/></a>;
+  return <a href="/#top" className={`wordmark ${compact ? 'wordmark-small' : ''}`} aria-label="SLN Auviora Media, back to top"><span className="brand-logo-frame"><img className="brand-logo" src={emblem.url} alt="SLN Auviora Media emblem" width={454} height={342} fetchPriority={compact ? 'auto' : 'high'}/></span></a>;
 }
 
 // CONFIGURE: paste the official SLN AUVIORA MEDIA Instagram profile URL here (e.g. https://www.instagram.com/your_handle/). Left empty until confirmed.
