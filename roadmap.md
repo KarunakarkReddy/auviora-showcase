@@ -12,4 +12,5 @@
 - [x] Inspect the existing project and assets for styling conflicts.
 - [x] Restore monochrome tokens, logo presentation, scoped button/cursor states, and contact form contrast.
 - [x] Consolidate conflicting CSS while preserving layout, content, and interactions.
-- [ ] Verify desktop/tablet/mobile, media, hover states, gallery, navigation, and form submission.
+- [x] Verify desktop/tablet/mobile layout, media playback, hover states, gallery timer, navigation, and form validation; preview build/typecheck passes.
+- [x] Exercise preserved contact submission: the existing form displays its sending-error state; submission success is not verified, and backend behavior was left unchanged for this styling-only task.
