@@ -9,7 +9,7 @@
 - [x] Add real company contact details when supplied.
 - [x] Place the supplied brand poster once within About and apply the approved palette through shared tokens.
 - [x] Verify logo placements, poster, colors, and existing navigation across desktop, tablet, and mobile.
-- [ ] Inspect the existing project and assets for styling conflicts.
-- [ ] Restore monochrome tokens, logo presentation, scoped button/cursor states, and contact form contrast.
-- [ ] Consolidate conflicting CSS while preserving layout, content, and interactions.
+- [x] Inspect the existing project and assets for styling conflicts.
+- [x] Restore monochrome tokens, logo presentation, scoped button/cursor states, and contact form contrast.
+- [x] Consolidate conflicting CSS while preserving layout, content, and interactions.
 - [ ] Verify desktop/tablet/mobile, media, hover states, gallery, navigation, and form submission.
