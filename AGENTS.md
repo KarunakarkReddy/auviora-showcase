@@ -13,3 +13,4 @@
 - Keep LED and non-LED inventory as subsections of the single Media section and Gallery as a separate home section; this preserves one coherent booking experience while separating visual examples.
 - Render the primary brand image through the shared Wordmark component, use CDN pointer imports for brand imagery, and keep a real raster favicon in public; this centralizes all logo placements while making the favicon deployment-independent.
 - Keep section-specific color contexts and scoped control selectors in the shared stylesheet; this prevents hero, contact-form, and floating-control styles from leaking into each other.
+- Keep the appearance switch in shared site chrome, persist its choice in browser storage, and theme via root CSS tokens while keeping video overlays dark; this supports both routes without changing their layouts.

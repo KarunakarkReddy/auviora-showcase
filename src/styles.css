@@ -30,6 +30,7 @@
   --font-body: "Libre Franklin", Arial, sans-serif;
 }
 :root {
+  color-scheme: dark;
   --black: #000000;
   --charcoal: #292929;
   --white: #FFFFFF;
@@ -65,6 +66,39 @@
   --shade-light: color-mix(in srgb, var(--black) 17%, transparent);
   --shadow-floating: 0 10px 30px -8px color-mix(in srgb, var(--black) 60%, transparent);
 }
+html.light {
+  color-scheme: light;
+  --background: var(--white);
+  --foreground: var(--black);
+  --highlight: var(--charcoal);
+  --soft: var(--charcoal);
+  --secondary: var(--ivory);
+  --secondary-foreground: var(--black);
+  --muted: var(--ivory);
+  --muted-foreground: var(--charcoal);
+  --accent: var(--ivory);
+  --accent-foreground: var(--black);
+  --card: var(--ivory);
+  --card-foreground: var(--black);
+  --popover: var(--white);
+  --popover-foreground: var(--black);
+  --ring: var(--charcoal);
+  --link: var(--charcoal);
+  --interactive-hover: var(--ivory);
+}
+/* Preserve readable cinematic overlays regardless of page appearance. */
+.hero, .experience, .led-media {
+  --background: var(--black);
+  --foreground: var(--white);
+  --highlight: var(--ivory);
+  --soft: var(--ivory);
+  color: var(--foreground);
+}
+html.light .site-header-scrolled { background: color-mix(in srgb, var(--white) 94%, transparent); }
+html.light .site-header:not(.site-header-scrolled) { --foreground: var(--white); --highlight: var(--ivory); color: var(--foreground); }
+html.light .custom-cursor:not(.cursor-expanded) { background: var(--black); }
+.theme-toggle { background: var(--background); color: var(--foreground); }
+.theme-toggle:hover { background: var(--accent); color: var(--foreground); border-color: var(--highlight); }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; overflow-x: clip; }
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-body); overflow-x: hidden; }
