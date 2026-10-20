@@ -5,7 +5,6 @@ import { ArrowUpRight, ChevronLeft, ChevronRight, Menu, X, Plus, Minus } from 'l
 import { Button } from '@/components/ui/button';
 import filmMain from '@/assets/sln-film-main.webm.asset.json';
 import stillMain from '@/assets/sln-film-main-poster.jpg.asset.json';
-import film2 from '@/assets/sln-film-2.webm.asset.json';
 import still1 from '@/assets/billboard-1.jpg.asset.json';
 import still2 from '@/assets/billboard-2.jpg.asset.json';
 import still3 from '@/assets/billboard-3.jpg.asset.json';
@@ -37,10 +36,16 @@ const galleryImages: [{ src: string; alt: string }, ...{ src: string; alt: strin
   { src: '/images/hoaldings.JPG', alt: 'Large outdoor hoardings beside a roadway' },
   { src: '/images/hoaldings1.JPG', alt: 'Outdoor hoarding advertising in the city' },
   { src: '/images/hoaldings2.JPG', alt: 'Roadside hoarding advertising' },
-  { src: '/images/gyantri1.JPG', alt: 'Outdoor advertising hoarding near a city road' },
+  { src: '/images/hoaldings3.JPG', alt: 'Outdoor advertising hoardings' },
   { src: '/images/outdoor-hoardings.JPG', alt: 'Outdoor billboard hoardings along a street' },
   { src: '/images/outdoor-hoardings1.JPG', alt: 'Large outdoor billboard in an urban setting' },
   { src: '/images/mobile_billboards.jpg', alt: 'Elevated and static mobile billboards in Bangalore' },
+  { src: '/images/road-media-live3.jpg', alt: 'Roadside outdoor media along a city street' },
+  { src: '/images/mobile_billboards2.jpg', alt: 'Mobile billboard advertising on a city road' },
+  { src: '/images/large-outdoor-hoardings1.jpg', alt: 'Large outdoor billboard hoarding' },
+  { src: '/images/large-outdoor-hoardings2.jpg', alt: 'Large-format roadside hoarding' },
+  { src: '/images/gyantri2.jpg', alt: 'Gantry advertising on a city road' },
+  { src: '/images/gyantri3.jpg', alt: 'Roadside advertising gantry' },
 ];
 const fade = { initial: { opacity: 0, y: 32 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.18 }, transition: { duration: .85, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } };
 
@@ -126,7 +131,7 @@ function BrandMarquee() {
 }
 
 function Experience() {
-  return <section className="experience" aria-label="Outdoor media experience"><Video src={film2.url} poster={still2.url} className="experience-video"/><div className="experience-shade"/><div className="experience-content section-pad"><span className="eyebrow">03 / THE EXPERIENCE</span><motion.h2 {...fade} className="display">VISIBILITY<br/><em>WITHOUT</em><br/>INTERRUPTION.</motion.h2><motion.p {...fade} className="experience-quote">Your audience is already on the road.<br/>We put your brand in their path.</motion.p><div className="experience-features">{[['01','HIGH VISIBILITY','Strategic roadside placements.'],['02','LARGE FORMAT','Advertising that commands attention.'],['03','REAL-WORLD REACH','Brand exposure across high-traffic environments.']].map(([n,t,c]) => <motion.div {...fade} key={n} className="experience-feature"><span>{n}</span><h3>{t}</h3><p>{c}</p></motion.div>)}</div></div></section>;
+  return <section className="experience" aria-label="Outdoor media experience"><Video src="/videos/mid-video.mp4" poster={still2.url} className="experience-video"/><div className="experience-shade"/><div className="experience-content section-pad"><span className="eyebrow">03 / THE EXPERIENCE</span><motion.h2 {...fade} className="display">VISIBILITY<br/><em>WITHOUT</em><br/>INTERRUPTION.</motion.h2><motion.p {...fade} className="experience-quote">Your audience is already on the road.<br/>We put your brand in their path.</motion.p><div className="experience-features">{[['01','HIGH VISIBILITY','Strategic roadside placements.'],['02','LARGE FORMAT','Advertising that commands attention.'],['03','REAL-WORLD REACH','Brand exposure across high-traffic environments.']].map(([n,t,c]) => <motion.div {...fade} key={n} className="experience-feature"><span>{n}</span><h3>{t}</h3><p>{c}</p></motion.div>)}</div></div></section>;
 }
 
 function Media() {
