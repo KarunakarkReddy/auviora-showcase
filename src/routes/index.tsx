@@ -103,7 +103,7 @@ function Hero() {
     loop
     playsInline
   >
-    <source src="/videos/drone-main.mp4" type="video/mp4" />
+    <source src="https://54s2q1xfw3aq95p7.public.blob.vercel-storage.com/drone-main.mp4" type="video/mp4" />
   </video> 
     <div className="hero-shade" />
     <div className={`hero-inner ${hideText ? 'hero-text-hidden' : ''}`}>
@@ -131,7 +131,7 @@ function BrandMarquee() {
 }
 
 function Experience() {
-  return <section className="experience" aria-label="Outdoor media experience"><Video src="/videos/mid-video.mp4" poster={still2.url} className="experience-video"/><div className="experience-shade"/><div className="experience-content section-pad"><span className="eyebrow">03 / THE EXPERIENCE</span><motion.h2 {...fade} className="display">VISIBILITY<br/><em>WITHOUT</em><br/>INTERRUPTION.</motion.h2><motion.p {...fade} className="experience-quote">Your audience is already on the road.<br/>We put your brand in their path.</motion.p><div className="experience-features">{[['01','HIGH VISIBILITY','Strategic roadside placements.'],['02','LARGE FORMAT','Advertising that commands attention.'],['03','REAL-WORLD REACH','Brand exposure across high-traffic environments.']].map(([n,t,c]) => <motion.div {...fade} key={n} className="experience-feature"><span>{n}</span><h3>{t}</h3><p>{c}</p></motion.div>)}</div></div></section>;
+  return <section className="experience" aria-label="Outdoor media experience"><Video src="https://54s2q1xfw3aq95p7.public.blob.vercel-storage.com/mid-video.mp4" poster={still2.url} className="experience-video"/><div className="experience-shade"/><div className="experience-content section-pad"><span className="eyebrow">03 / THE EXPERIENCE</span><motion.h2 {...fade} className="display">VISIBILITY<br/><em>WITHOUT</em><br/>INTERRUPTION.</motion.h2><motion.p {...fade} className="experience-quote">Your audience is already on the road.<br/>We put your brand in their path.</motion.p><div className="experience-features">{[['01','HIGH VISIBILITY','Strategic roadside placements.'],['02','LARGE FORMAT','Advertising that commands attention.'],['03','REAL-WORLD REACH','Brand exposure across high-traffic environments.']].map(([n,t,c]) => <motion.div {...fade} key={n} className="experience-feature"><span>{n}</span><h3>{t}</h3><p>{c}</p></motion.div>)}</div></div></section>;
 }
 
 function Media() {
