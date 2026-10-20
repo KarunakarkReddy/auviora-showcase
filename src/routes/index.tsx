@@ -3,7 +3,6 @@ import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 import { ArrowUpRight, ChevronLeft, ChevronRight, Menu, X, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
 import filmMain from '@/assets/sln-film-main.webm.asset.json';
 import stillMain from '@/assets/sln-film-main-poster.jpg.asset.json';
 import film2 from '@/assets/sln-film-2.webm.asset.json';
@@ -11,7 +10,6 @@ import still1 from '@/assets/billboard-1.jpg.asset.json';
 import still2 from '@/assets/billboard-2.jpg.asset.json';
 import still3 from '@/assets/billboard-3.jpg.asset.json';
 import still4 from '@/assets/billboard-4.jpg.asset.json';
-import brandPoster from '@/assets/sln-brand-poster.jpg.asset.json';
 import { companyData, siteNav } from '@/data/company';
 import { adFormats, mediaLocations, nonLedMedia, services, upcomingLocations } from '@/data/media';
 import { Footer, Wordmark } from '@/components/site-chrome';
@@ -30,6 +28,20 @@ export const Route = createFileRoute('/')({
 
 const nav = siteNav;
 const stills = [still1, still2, still3, still4];
+const galleryImages: [{ src: string; alt: string }, ...{ src: string; alt: string }[]] = [
+  { src: '/images/sln-main-live-pic.png', alt: 'LED billboard and roadside advertising in Bengaluru' },
+  { src: '/images/road-media-live.JPG', alt: 'Road media billboards along a city street' },
+  { src: '/images/gyantri1.JPG', alt: 'Roadside billboard advertising in Bengaluru' },
+  { src: '/images/road-media-live2.JPG', alt: 'Outdoor advertising on a busy Bengaluru road' },
+  { src: '/images/unipole.JPG', alt: 'Unipole advertising boards along a road' },
+  { src: '/images/hoaldings.JPG', alt: 'Large outdoor hoardings beside a roadway' },
+  { src: '/images/hoaldings1.JPG', alt: 'Outdoor hoarding advertising in the city' },
+  { src: '/images/hoaldings2.JPG', alt: 'Roadside hoarding advertising' },
+  { src: '/images/gyantri1.JPG', alt: 'Outdoor advertising hoarding near a city road' },
+  { src: '/images/outdoor-hoardings.JPG', alt: 'Outdoor billboard hoardings along a street' },
+  { src: '/images/outdoor-hoardings1.JPG', alt: 'Large outdoor billboard in an urban setting' },
+  { src: '/images/mobile_billboards.jpg', alt: 'Elevated and static mobile billboards in Bangalore' },
+];
 const fade = { initial: { opacity: 0, y: 32 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.18 }, transition: { duration: .85, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } };
 
 function Navbar() {
@@ -79,7 +91,15 @@ function Hero() {
   const [hideText, setHideText] = useState(false);
   useEffect(() => { const t = window.setTimeout(() => setHideText(true), 6000); return () => window.clearTimeout(t); }, []);
   return <section className="hero" id="top" aria-label="SLN Auviora Media introduction">
-    <Video src={filmMain.url} poster={stillMain.url} eager className="hero-video" />
+  <video
+    className="hero-video"
+    autoPlay
+    muted
+    loop
+    playsInline
+  >
+    <source src="/videos/drone-main.mp4" type="video/mp4" />
+  </video> 
     <div className="hero-shade" />
     <div className={`hero-inner ${hideText ? 'hero-text-hidden' : ''}`}>
       <motion.p className="eyebrow hero-eyebrow hero-fade-text" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .4, duration: .8 }}>OUTDOOR MEDIA, REIMAGINED <span className="eyebrow-rule"/></motion.p>
@@ -124,20 +144,117 @@ function Media() {
   </section>;
 }
 
+type InventorySlide = { src: string; alt: string };
+type InventoryCard = { title: string; images: [InventorySlide, ...InventorySlide[]]; location?: string };
+
+function InventorySlideshow({ title, images, location }: { title: string; images: [InventorySlide, ...InventorySlide[]]; location?: string | undefined }) {
+  const [index, setIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (isHovered || images.length < 2) return;
+    const timer = window.setInterval(() => setIndex(current => (current + 1) % images.length), 3000);
+    return () => window.clearInterval(timer);
+  }, [images.length, isHovered]);
+
+  const step = (direction: number) => {
+    setIndex(current => (current + direction + images.length) % images.length);
+  };
+
+  const currentImage = images[index] ?? images[0];
+
+  return (
+    <div
+      className="inventory-image"
+      aria-label={`${title} photographs`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <img src={currentImage.src} alt={currentImage.alt} />
+      {location && <small className="inventory-location">{location}</small>}
+      <button
+        type="button"
+        className="inventory-slideshow-arrow inventory-slideshow-prev"
+        aria-label={`Previous ${title} image`}
+        onClick={() => step(-1)}
+      >
+        <ChevronLeft size={22} />
+      </button>
+      <button
+        type="button"
+        className="inventory-slideshow-arrow inventory-slideshow-next"
+        aria-label={`Next ${title} image`}
+        onClick={() => step(1)}
+      >
+        <ChevronRight size={22} />
+      </button>
+    </div>
+  );
+}
+
 function NonLed() {
-  const { roadMedia, unipoles, holdings, area, outdoorBoardings } = nonLedMedia;
+  const inventoryCards: InventoryCard[] = [
+    {
+      title: 'ROAD MEDIA',
+      images: [
+        { src: '/images/road-media-live.JPG', alt: 'Road media advertising along Bannerghatta Road' },
+        { src: '/images/road-media-live2.JPG', alt: 'Roadside media advertising in Bengaluru' },
+      ],
+      location: 'BANNERGHATTA ROAD',
+    },
+    {
+      title: 'UNIPOLES AND HOARDINGS',
+      images: [
+        { src: '/images/unipole.JPG', alt: 'Unipole advertising boards along a road' },
+        { src: '/images/hoaldings1.JPG', alt: 'Outdoor hoardings beside a road' },
+        { src: '/images/hoaldings2.JPG', alt: 'Large roadside hoarding' },
+        { src: '/images/hoaldings3.JPG', alt: 'Outdoor advertising hoardings' },
+      ],
+    },
+    {
+      title: 'GYANTRIES',
+      images: [
+        { src: '/images/gyantri1.JPG', alt: 'Outdoor gantry advertising' },
+        { src: '/images/gyantri2.jpg', alt: 'Gantry advertising on a city road' },
+        { src: '/images/gyantri3.jpg', alt: 'Roadside advertising gantry' },
+      ],
+    },
+    {
+      title: 'LARGE OUTDOOR HOARDINGS',
+      images: [
+        { src: '/images/hoaldings.JPG', alt: 'Large outdoor hoardings' },
+        { src: '/images/large-outdoor-hoardings1.jpg', alt: 'Large outdoor billboard hoarding' },
+        { src: '/images/large-outdoor-hoardings2.jpg', alt: 'Large-format roadside hoarding' },
+        { src: '/images/outdoor-hoardings.JPG', alt: 'Outdoor billboard hoardings along a street' },
+        { src: '/images/outdoor-hoardings1.JPG', alt: 'Large outdoor billboard in an urban setting' },
+      ],
+    },
+    {
+      title: 'ELEVATED AND STATIC MOBILE BILLBOARDS',
+      images: [
+        { src: '/images/mobile_billboards.jpg', alt: 'Elevated and static mobile billboards in Bangalore' },
+        { src: '/images/mobile_billboards2.jpg', alt: 'Mobile billboard advertising on a city road' },
+      ],
+    },
+  ];
+
   return <div className="non-led section-pad"><div className="media-subheading"><span className="eyebrow">02 / NON-LED OUTDOOR MEDIA</span><motion.h3 {...fade} className="display">NON-LED<br/><em>OUTDOOR MEDIA.</em></motion.h3><p>Traditional outdoor advertising formats designed for high-visibility roadside brand presence.</p></div>
     <div className="inventory">
-      {[
-        { title: 'ROAD MEDIA', body: <><div className="inventory-item"><span className="display">{roadMedia.measurement}</span></div><p>{area[0]}</p></> },
-        { title: 'UNIPOLES', body: unipoles.map(u => <div className="inventory-item" key={u.size}><span className="display">{u.size}</span><small>{u.sides}</small></div>) },
-        { title: 'HOLDINGS', body: holdings.map(h => <div className="inventory-item" key={h.size}><span className="display">{h.size}</span><small>{h.availability}</small></div>) },
-        { title: 'OUTDOOR BOARDINGS', body: <div className="inventory-item"><span className="display">{outdoorBoardings.size}</span></div> },
-      ].map((c, i) => <motion.article {...fade} className="inventory-group" key={c.title}>
-        <div className="inventory-image" role="img" aria-label={`${c.title} photograph coming soon`}><span>0{i + 1}</span><small>PHOTOGRAPH COMING SOON</small></div>
-        <div className="inventory-content"><h4>{c.title}</h4>{c.body}</div>
+      {inventoryCards.map(c => <motion.article {...fade} className="inventory-group" key={c.title}>
+        <InventorySlideshow title={c.title} images={c.images} location={c.location} />
+        <div className="inventory-content">
+  <h4>{c.title}</h4>
+  <p className="inventory-address">
+    {c.title === 'ROAD MEDIA' && 'Bannerghatta Road - 560083'}
+    {c.title === 'UNIPOLES AND HOARDINGS' && 'Bannerghatta Road, Begur Road and Electronic City Road'}
+    {c.title === 'GYANTRIES' && 'Bannerghatta Road and Begur Road'}
+    {c.title === 'LARGE OUTDOOR HOARDINGS' && 'Electronic City Road and Bannerghatta Road'}
+    {c.title === 'ELEVATED AND STATIC MOBILE BILLBOARDS' && 'Bangalore'}
+  </p>
+</div>
       </motion.article>)}
     </div>
+    
   </div>;
 }
 
@@ -148,16 +265,18 @@ function Services() {
 
 function Gallery() {
   const [index, setIndex] = useState(0);
+  const [failedIndex, setFailedIndex] = useState<number | null>(null);
   const timer = useRef<number | undefined>(undefined);
   const reduced = useReducedMotion();
-  const count = stills.length;
+  const count = galleryImages.length;
   const startTimer = () => {
     window.clearInterval(timer.current);
     if (!reduced) timer.current = window.setInterval(() => setIndex(i => (i + 1) % count), 3000);
   };
   useEffect(() => { startTimer(); return () => window.clearInterval(timer.current); }, [reduced, count]);
   const step = (dir: number) => { setIndex(i => (i + dir + count) % count); startTimer(); };
-  return <section id="gallery" className="gallery section-pad"><div className="gallery-header"><div><span className="eyebrow">05 / GALLERY</span><motion.h2 {...fade} className="display">WHERE BRANDS<br/><em>MEET THE CITY.</em></motion.h2></div><p>Outdoor advertising environments<br/>in motion and in view.</p></div><div className="gallery-stage"><div className="gallery-image"><img key={index} className="gallery-fade" src={stills[index]?.url ?? still1.url} alt={`Outdoor advertising environment ${String(index + 1).padStart(2, '0')} of ${String(count).padStart(2, '0')}`}/><button type="button" className="gallery-arrow gallery-prev" aria-label="Previous image" onClick={() => step(-1)}><ChevronLeft size={26}/></button><button type="button" className="gallery-arrow gallery-next" aria-label="Next image" onClick={() => step(1)}><ChevronRight size={26}/></button></div><p className="gallery-counter" aria-live="polite">{String(index + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</p></div></section>;
+  const currentImage = galleryImages[index] ?? galleryImages[0];
+  return <section id="gallery" className="gallery section-pad"><div className="gallery-header"><div><span className="eyebrow">05 / GALLERY</span><motion.h2 {...fade} className="display">WHERE BRANDS<br/><em>MEET THE CITY.</em></motion.h2></div><p>Outdoor advertising environments<br/>in motion and in view.</p></div><div className="gallery-stage"><div className="gallery-image">{failedIndex === index ? <div role="status" style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', color: 'var(--soft)' }}>Image unavailable</div> : <img key={index} className="gallery-fade" src={currentImage.src} alt={currentImage.alt} onError={() => setFailedIndex(index)}/>}<button type="button" className="gallery-arrow gallery-prev" aria-label="Previous image" onClick={() => step(-1)}><ChevronLeft size={26}/></button><button type="button" className="gallery-arrow gallery-next" aria-label="Next image" onClick={() => step(1)}><ChevronRight size={26}/></button></div><p className="gallery-counter" aria-live="polite">{String(index + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</p></div></section>;
 }
 
 function WhyOutdoor() {
@@ -166,7 +285,7 @@ function WhyOutdoor() {
 }
 
 function About() {
-  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><img className="brand-poster" src={brandPoster.url} alt="SLN Auviora Media blue and cyan brand wordmark" width={1536} height={768} loading="lazy"/><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, holdings and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
+  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><img className="brand-poster" src="/images/sln-logo-side-final.png" alt="SLN Auviora Media blue and cyan brand wordmark" width={460} height={228} loading="lazy"/><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, holdings and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
 }
 
 function Contact() {
@@ -177,18 +296,46 @@ function Contact() {
     const form = event.currentTarget;
     const data = new FormData(form);
     setStatus('sending');
-    const { error } = await supabase.from('campaign_enquiries').insert({
-      name: String(data.get('name') || '').trim(), company: String(data.get('company') || '').trim(),
-      phone: String(data.get('phone') || '').trim(), email: String(data.get('email') || '').trim(),
-      requirement: String(data.get('requirement') || '').trim(), message: String(data.get('message') || '').trim(),
-    });
-    if (error) setStatus('error'); else { setStatus('sent'); form.reset(); }
-  }
-  return <section id="contact" className="contact section-pad"><div className="contact-top"><span className="eyebrow">10 / GET IN TOUCH</span><span className="small-meta">YOUR NEXT CAMPAIGN STARTS HERE</span></div><div className="contact-layout"><div><motion.h2 {...fade} className="display">LET'S PUT<br/>YOUR BRAND<br/><em>ON THE ROAD.</em></motion.h2><p>Tell us about your campaign and we'll help you identify the right outdoor media opportunity.</p><div className="contact-details"><strong>{companyData.name}</strong><a href={`tel:${companyData.mobile}`}>MOBILE · {companyData.mobile}</a><address>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</address><span>GSTIN · {companyData.gstin}</span></div><div className="contact-ctas"><Button asChild className="button-gold"><a href={`tel:${companyData.mobile}`}>CALL NOW <ArrowUpRight/></a></Button><Button asChild variant="outline" className="button-outline"><a href="#enquiry">SEND ENQUIRY <ArrowUpRight/></a></Button></div></div><form id="enquiry" className="contact-form" onSubmit={submit}><div className="form-pair"><label>NAME <input name="name" type="text" required minLength={2} maxLength={100} placeholder="Your name"/></label><label>COMPANY <input name="company" type="text" required minLength={2} maxLength={160} placeholder="Company name"/></label></div><div className="form-pair"><label>PHONE <input name="phone" type="tel" required minLength={6} maxLength={30} placeholder="Phone number"/></label><label>EMAIL <input name="email" type="email" required maxLength={254} placeholder="Email address"/></label></div><label>CAMPAIGN / REQUIREMENT <input name="requirement" type="text" required minLength={2} maxLength={240} placeholder="Tell us what you have in mind"/></label><label>MESSAGE <textarea name="message" required minLength={5} maxLength={2000} rows={3} placeholder="A little more about your campaign"/></label><div className="form-bottom"><p role="status" aria-live="polite">{status === 'sent' ? 'Thank you. Your enquiry has been received.' : status === 'error' ? 'We couldn’t send your enquiry. Please try again.' : 'We’ll be in touch about your campaign.'}</p><Button type="submit" className="button-gold" disabled={status === 'sending'}>{status === 'sending' ? 'SENDING...' : 'START A CONVERSATION'} <ArrowUpRight/></Button></div></form></div></section>;
-}
+    const company = String(data.get('company') || '').trim();
+    const message = String(data.get('message') || '').trim();
+    const enquiryMessage = [
+      company ? `Company: ${company}` : '',
+      message,
+    ].filter(Boolean).join('\n\n');
 
-function CompanyInfo() {
-  return <section className="company-info section-pad" aria-label="Company details"><div id="company"><span className="eyebrow">COMPANY DETAILS</span><dl><div><dt>COMPANY</dt><dd>{companyData.name}</dd></div><div><dt>GSTIN</dt><dd>{companyData.gstin}</dd></div><div><dt>REGISTERED / BUSINESS ADDRESS</dt><dd>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</dd></div><div><dt>MOBILE</dt><dd><a href={`tel:${companyData.mobile}`}>{companyData.mobile}</a></dd></div></dl></div></section>;
+    try {
+      const response = await fetch('https://uqmzwnbeslssjvvuvrdg.supabase.co/functions/v1/send-enquiry-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: String(data.get('name') || '').trim(),
+          phone: String(data.get('phone') || '').trim(),
+          email: String(data.get('email') || '').trim(),
+          subject: String(data.get('requirement') || '').trim(),
+          message: enquiryMessage,
+        }),
+      });
+      const result: unknown = await response.json();
+      if (
+        !response.ok ||
+        result === null ||
+        typeof result !== 'object' ||
+        !('success' in result) ||
+        result.success !== true ||
+        !('adminEmailAccepted' in result) ||
+        result.adminEmailAccepted !== true
+      ) {
+        throw new Error(`Enquiry request failed (HTTP ${response.status})`);
+      }
+
+      setStatus('sent');
+      form.reset();
+    } catch (error) {
+      console.error('Unable to send enquiry', error);
+      setStatus('error');
+    }
+  }
+  return <section id="contact" className="contact section-pad"><div className="contact-top"><span className="eyebrow">10 / GET IN TOUCH</span><span className="small-meta">YOUR NEXT CAMPAIGN STARTS HERE</span></div><div className="contact-layout"><div><motion.h2 {...fade} className="display">LET'S PUT<br/>YOUR BRAND<br/><em>ON THE ROAD.</em></motion.h2><p>Tell us about your campaign and we'll help you identify the right outdoor media opportunity.</p><div className="contact-details"><strong>{companyData.name}</strong><a href={`tel:${companyData.mobile}`}>MOBILE · {companyData.mobile}</a><address>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</address></div><div className="contact-ctas"><Button asChild className="button-gold"><a href={`tel:${companyData.mobile}`}>CALL NOW <ArrowUpRight/></a></Button><Button asChild variant="outline" className="button-outline"><a href="#enquiry">SEND ENQUIRY <ArrowUpRight/></a></Button></div></div><form id="enquiry" className="contact-form" onSubmit={submit}><div className="form-pair"><label>NAME <input name="name" type="text" required minLength={2} maxLength={100} placeholder="Your name"/></label><label>COMPANY <input name="company" type="text" minLength={2} maxLength={160} placeholder="Company name"/></label></div><div className="form-pair"><label>PHONE <input name="phone" type="tel" required minLength={6} maxLength={30} placeholder="Phone number"/></label><label>EMAIL <input name="email" type="email" maxLength={254} placeholder="Email address"/></label></div><label>CAMPAIGN / REQUIREMENT <input name="requirement" type="text" minLength={2} maxLength={240} placeholder="Tell us what you have in mind"/></label><label>MESSAGE <textarea name="message" minLength={5} maxLength={2000} rows={3} placeholder="A little more about your campaign"/></label><div className="form-bottom"><p role="status" aria-live="polite">{status === 'sent' ? 'Thank you. Your enquiry has been received.' : status === 'error' ? 'We couldn’t send your enquiry. Please try again.' : 'We’ll be in touch about your campaign.'}</p><Button type="submit" className="button-gold" disabled={status === 'sending'}>{status === 'sending' ? 'SENDING...' : 'START A CONVERSATION'} <ArrowUpRight/></Button></div></form></div></section>;
 }
 
 function CustomCursor() {
@@ -209,5 +356,5 @@ function ScrollProgress() {
 }
 
 function Home() {
-  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/><CompanyInfo/></main><Footer/></>;
+  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/></main><Footer/></>;
 }

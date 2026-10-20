@@ -6,7 +6,7 @@ import { companyData, siteNav } from '@/data/company';
 import emblem from '@/assets/sln-emblem.jpg.asset.json';
 
 export function Wordmark({ compact = false }: { compact?: boolean }) {
-  return <a href="/#top" className={`wordmark ${compact ? 'wordmark-small' : ''}`} aria-label="SLN Auviora Media, back to top"><span className="brand-logo-frame"><img className="brand-logo" src={emblem.url} alt="SLN Auviora Media emblem" width={454} height={342} fetchPriority={compact ? 'auto' : 'high'}/></span></a>;
+  return <a href="/#top" className={`wordmark ${compact ? 'wordmark-small' : ''}`} aria-label="SLN Auviora Media, back to top"><span className="brand-logo-frame"><img className="brand-logo" src="/images/sln-logo-main-final.png" alt="SLN Auviora Media emblem" width={454} height={342} fetchPriority={compact ? 'auto' : 'high'}/></span></a>;
 }
 
 // CONFIGURE: paste the official SLN AUVIORA MEDIA Instagram profile URL here (e.g. https://www.instagram.com/your_handle/). Left empty until confirmed.
@@ -44,6 +44,6 @@ export function Footer() {
   return <footer className="footer section-pad"><div className="footer-main">
     <div><Wordmark compact/><p className="footer-company">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</p><p>{companyData.tagline.toUpperCase()}</p></div>
     <div className="footer-links"><span>EXPLORE</span>{siteNav.map(([name, href]) => <a href={href} key={name}>{name}</a>)}<Link to="/terms">TERMS & CONDITIONS</Link></div>
-    <div className="footer-links"><span>CONNECT</span><a href={`tel:${companyData.mobile}`}>{companyData.mobile} <ArrowUpRight size={14}/></a><p className="footer-info">{companyData.shortLocation}</p><p className="footer-info">GSTIN: {companyData.gstin}</p><a href="/#payment" className="footer-subtle">PAYMENT DETAILS</a></div>
+    <div className="footer-links"><span>CONNECT</span><a href={`tel:${companyData.mobile}`}>{companyData.mobile} <ArrowUpRight size={14}/></a><p className="footer-info">{companyData.shortLocation}</p></div>
   </div><div className="footer-bottom"><span>© {new Date().getFullYear()} {companyData.name}</span><a href="/#top">BACK TO TOP ↑</a><span>MADE TO BE SEEN.</span></div></footer>;
 }
