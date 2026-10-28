@@ -241,7 +241,11 @@ img,video { display: block; }
 .led-media { position: relative; min-height: 78vh; overflow: hidden; }
 .led-media .panel-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .led-title { position: absolute; left: 40px; bottom: 40px; right: 40px; z-index: 2; }
+.led-title-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
 .led-title h3 { font-size: clamp(40px, 4vw, 68px); line-height: 1; margin: 16px 0; }
+.led-title-heading .maps-link { height: 42px; padding: 0 14px; gap: 8px; white-space: nowrap; background: #fff; color: #111; border-color: #fff; }
+.led-title-heading .maps-link:hover { background: #f2f2f2; color: #111; border-color: #f2f2f2; }
+.maps-logo { width: 20px; height: 20px; flex: none; }
 .led-title p { color: var(--soft); font-size: 13px; letter-spacing: .08em; line-height: 1.8; margin: 0; }
 .led-note { display: block; color: var(--highlight); font-size: 10px; letter-spacing: .18em; font-weight: 700; margin-bottom: 14px; }
 .led-specs dl { margin: 0 0 30px; }

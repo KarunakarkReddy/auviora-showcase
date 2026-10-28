@@ -5,7 +5,7 @@ export const companyData = {
   mobile: '8951858999',
   addressLines: ['Bangalore, Karnataka, India'],
   shortLocation: 'Bangalore, Karnataka, India',
-  whatsapp: 'https://wa.me/918951858999',
+  whatsapp: `https://wa.me/918951858999?text=${encodeURIComponent("Hello SLN Auviora Media! 👋\nI'm interested in your services. Could you please provide more details about your offerings and pricing?")}`,
 };
 
 export const siteNav = [

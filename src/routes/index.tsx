@@ -16,7 +16,7 @@ import { Footer, Wordmark } from '@/components/site-chrome';
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
     { title: 'SLN Auviora Media | Outdoor Advertising & Billboard Media' },
-    { name: 'description', content: 'SLN Auviora Media provides P5 LED boards, unipoles, holdings and roadside billboard media on Bannerghatta Road, Bengaluru.' },
+    { name: 'description', content: 'SLN Auviora Media provides P5 LED boards, unipoles, Hoarding and roadside billboard media on Bannerghatta Road, Bengaluru.' },
     { property: 'og:title', content: 'SLN Auviora Media | Outdoor Advertising & Billboard Media' },
     { property: 'og:description', content: 'Premium outdoor advertising and billboard media solutions designed to put brands in high-visibility locations.' },
     { property: 'og:type', content: 'website' },
@@ -135,12 +135,18 @@ function Experience() {
 }
 
 function Media() {
+  const getLocationWhatsAppUrl = (message: string) => {
+    const url = new URL(companyData.whatsapp);
+    url.searchParams.set('text', message);
+    return url.toString();
+  };
+
   return <section id="media" className="media"><div className="section-pad"><div className="section-heading"><span className="eyebrow">04 / MEDIA</span><motion.h2 {...fade} className="display">MEDIA<span className="media-title-period">.</span></motion.h2></div>
     <div className="media-subheading"><span className="eyebrow">01 / LED OUTDOOR MEDIA</span><motion.h3 {...fade} className="display">LED OUTDOOR<br/><em>MEDIA.</em></motion.h3><p>High-resolution P5 outdoor LED advertising positioned for high-visibility roadside exposure.</p></div>
     <div className="led-support"><motion.p {...fade}>LED displays provide visibility to commuters, vehicles, Metro passengers and pedestrians.</motion.p><motion.p {...fade}>Premium P5 Outdoor SMD LED using high-quality Kinglight Lamps, delivering bright, sharp, and reliable outdoor display performance.</motion.p></div>
     {mediaLocations.map(loc => <article key={loc.id} className="led-location">
-      <div className="led-media"><Video src={loc.video} poster={loc.poster} className="panel-video"/><div className="panel-shade"/><div className="led-title"><span className="eyebrow">LOCATION {loc.number}</span><h3 className="display">{loc.name}</h3><p>{loc.addressLines.map(l => <span key={l}>{l}<br/></span>)}</p></div></div>
-      <div className="led-specs">{loc.note && <span className="led-note">{loc.note}</span>}<dl>{loc.specs.map(([k, v], i) => <motion.div key={k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08, duration: .7 }}><dt>{k}</dt><dd>{v}</dd></motion.div>)}</dl><Button asChild variant="ghost" className="text-link"><a href="#contact">ENQUIRE ABOUT THIS SPACE <ArrowUpRight/></a></Button></div>
+      <div className="led-media"><Video src={loc.video} poster={loc.poster} className="panel-video"/><div className="panel-shade"/><div className="led-title"><span className="eyebrow">LOCATION {loc.number}</span><div className="led-title-heading"><h3 className="display">{loc.name}</h3>{loc.mapUrl && <Button asChild variant="outline" className="button-outline maps-link"><a href={loc.mapUrl} target="_blank" rel="noopener noreferrer"><svg className="maps-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M12 2a8 8 0 0 0-8 8c0 5.2 8 12 8 12s8-6.8 8-12a8 8 0 0 0-8-8Z"/><path fill="#34A853" d="M4.6 6.7A8 8 0 0 0 4 10c0 2.8 2.7 6.1 5 8.7l2-5.3Z"/><path fill="#FBBC04" d="M19.4 6.7A8 8 0 0 1 20 10c0 2.8-2.7 6.1-5 8.7l-2-5.3Z"/><path fill="#EA4335" d="M12 2a8 8 0 0 0-7.4 4.9l5.8 6.1L12 8l2-5.7A8 8 0 0 0 12 2Z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg> OPEN IN GOOGLE MAPS</a></Button>}</div><p>{loc.addressLines.map(l => <span key={l}>{l}<br/></span>)}</p></div></div>
+      <div className="led-specs">{loc.note && <span className="led-note">{loc.note}</span>}<dl>{loc.specs.map(([k, v], i) => <motion.div key={k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08, duration: .7 }}><dt>{k}</dt><dd>{v}</dd></motion.div>)}</dl><Button asChild variant="ghost" className="text-link"><a href={getLocationWhatsAppUrl(loc.enquiryMessage)} target="_blank" rel="noopener noreferrer">ENQUIRE ABOUT THIS SPACE <ArrowUpRight/></a></Button></div>
     </article>)}
     <div className="upcoming"><span className="eyebrow">UPCOMING</span><div className="upcoming-list">{upcomingLocations.map((l, i) => <motion.div {...fade} key={l} className="upcoming-item"><span>0{i + 1}</span><h3 className="display">{l}</h3></motion.div>)}</div><p>New outdoor advertising opportunities coming soon.</p></div>
     <div className="ad-formats"><span className="eyebrow">ADVERTISING OPTIONS</span><div className="ad-format-row">{adFormats.map(f => <motion.div {...fade} key={f}><strong className="display">{f.split(' ')[0]}</strong><span>SECOND FORMAT</span></motion.div>)}</div><p>Flexible 10-second and 15-second advertising formats.</p></div>
@@ -217,7 +223,7 @@ function NonLed() {
       ],
     },
     {
-      title: 'GYANTRIES',
+      title: 'GANTRIES',
       images: [
         { src: '/images/gyantri1.JPG', alt: 'Outdoor gantry advertising' },
         { src: '/images/gyantri2.jpg', alt: 'Gantry advertising on a city road' },
@@ -252,7 +258,7 @@ function NonLed() {
   <p className="inventory-address">
     {c.title === 'ROAD MEDIA' && 'Bannerghatta Road - 560083'}
     {c.title === 'UNIPOLES AND HOARDINGS' && 'Bannerghatta Road, Begur Road and Electronic City Road'}
-    {c.title === 'GYANTRIES' && 'Bannerghatta Road and Begur Road'}
+    {c.title === 'GANTRIES' && 'Bannerghatta Road and Begur Road'}
     {c.title === 'LARGE OUTDOOR HOARDINGS' && 'Electronic City Road and Bannerghatta Road'}
     {c.title === 'ELEVATED AND STATIC MOBILE BILLBOARDS' && 'Bangalore'}
   </p>
@@ -290,23 +296,19 @@ function WhyOutdoor() {
 }
 
 function About() {
-  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><img className="brand-poster" src="/images/sln-logo-side-final.png" alt="SLN Auviora Media blue and cyan brand wordmark" width={460} height={228} loading="lazy"/><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, holdings and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
+  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><img className="brand-poster" src="/images/sln-logo-side-final.png" alt="SLN Auviora Media blue and cyan brand wordmark" width={460} height={228} loading="lazy"/><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, Hoarding and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
 }
 
 function Contact() {
   const [status, setStatus] = useState<'idle'|'sending'|'sent'|'error'>('idle');
+  const submissionInProgress = useRef(false);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (status === 'sending') return;
+    if (submissionInProgress.current) return;
+    submissionInProgress.current = true;
     const form = event.currentTarget;
     const data = new FormData(form);
     setStatus('sending');
-    const company = String(data.get('company') || '').trim();
-    const message = String(data.get('message') || '').trim();
-    const enquiryMessage = [
-      company ? `Company: ${company}` : '',
-      message,
-    ].filter(Boolean).join('\n\n');
 
     try {
       const response = await fetch('https://uqmzwnbeslssjvvuvrdg.supabase.co/functions/v1/send-enquiry-email', {
@@ -314,10 +316,11 @@ function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: String(data.get('name') || '').trim(),
+          company: String(data.get('company') || '').trim(),
           phone: String(data.get('phone') || '').trim(),
           email: String(data.get('email') || '').trim(),
           subject: String(data.get('requirement') || '').trim(),
-          message: enquiryMessage,
+          message: String(data.get('message') || '').trim(),
         }),
       });
       const result: unknown = await response.json();
@@ -338,9 +341,11 @@ function Contact() {
     } catch (error) {
       console.error('Unable to send enquiry', error);
       setStatus('error');
+    } finally {
+      submissionInProgress.current = false;
     }
   }
-  return <section id="contact" className="contact section-pad"><div className="contact-top"><span className="eyebrow">10 / GET IN TOUCH</span><span className="small-meta">YOUR NEXT CAMPAIGN STARTS HERE</span></div><div className="contact-layout"><div><motion.h2 {...fade} className="display">LET'S PUT<br/>YOUR BRAND<br/><em>ON THE ROAD.</em></motion.h2><p>Tell us about your campaign and we'll help you identify the right outdoor media opportunity.</p><div className="contact-details"><strong>{companyData.name}</strong><a href={`tel:${companyData.mobile}`}>MOBILE · {companyData.mobile}</a><address>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</address></div><div className="contact-ctas"><Button asChild className="button-gold"><a href={`tel:${companyData.mobile}`}>CALL NOW <ArrowUpRight/></a></Button><Button asChild variant="outline" className="button-outline"><a href="#enquiry">SEND ENQUIRY <ArrowUpRight/></a></Button></div></div><form id="enquiry" className="contact-form" onSubmit={submit}><div className="form-pair"><label>NAME <input name="name" type="text" required minLength={2} maxLength={100} placeholder="Your name"/></label><label>COMPANY <input name="company" type="text" minLength={2} maxLength={160} placeholder="Company name"/></label></div><div className="form-pair"><label>PHONE <input name="phone" type="tel" required minLength={6} maxLength={30} placeholder="Phone number"/></label><label>EMAIL <input name="email" type="email" maxLength={254} placeholder="Email address"/></label></div><label>CAMPAIGN / REQUIREMENT <input name="requirement" type="text" minLength={2} maxLength={240} placeholder="Tell us what you have in mind"/></label><label>MESSAGE <textarea name="message" minLength={5} maxLength={2000} rows={3} placeholder="A little more about your campaign"/></label><div className="form-bottom"><p role="status" aria-live="polite">{status === 'sent' ? 'Thank you. Your enquiry has been received.' : status === 'error' ? 'We couldn’t send your enquiry. Please try again.' : 'We’ll be in touch about your campaign.'}</p><Button type="submit" className="button-gold" disabled={status === 'sending'}>{status === 'sending' ? 'SENDING...' : 'START A CONVERSATION'} <ArrowUpRight/></Button></div></form></div></section>;
+  return <section id="contact" className="contact section-pad"><div className="contact-top"><span className="eyebrow">10 / GET IN TOUCH</span><span className="small-meta">YOUR NEXT CAMPAIGN STARTS HERE</span></div><div className="contact-layout"><div><motion.h2 {...fade} className="display">LET'S PUT<br/>YOUR BRAND<br/><em>ON THE ROAD.</em></motion.h2><p>Tell us about your campaign and we'll help you identify the right outdoor media opportunity.</p><div className="contact-details"><strong>{companyData.name}</strong><a href={`tel:${companyData.mobile}`}>MOBILE · {companyData.mobile}</a><address>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</address></div><div className="contact-ctas"><Button asChild className="button-gold"><a href={`tel:${companyData.mobile}`}>CALL NOW <ArrowUpRight/></a></Button><Button asChild variant="outline" className="button-outline"><a href={companyData.whatsapp} target="_blank" rel="noopener noreferrer">SEND ENQUIRY <ArrowUpRight/></a></Button></div></div><form id="enquiry" className="contact-form" onSubmit={submit}><div className="form-pair"><label>NAME <input name="name" type="text" required minLength={2} maxLength={100} placeholder="Your name"/></label><label>COMPANY <input name="company" type="text" minLength={2} maxLength={160} placeholder="Company name"/></label></div><div className="form-pair"><label>PHONE <input name="phone" type="tel" required minLength={6} maxLength={30} placeholder="Phone number"/></label><label>EMAIL <input name="email" type="email" maxLength={254} placeholder="Email address"/></label></div><label>CAMPAIGN / REQUIREMENT <input name="requirement" type="text" minLength={2} maxLength={240} placeholder="Tell us what you have in mind"/></label><label>MESSAGE <textarea name="message" minLength={5} maxLength={2000} rows={3} placeholder="A little more about your campaign"/></label><div className="form-bottom"><p role="status" aria-live="polite">{status === 'sent' ? 'Thank you for your enquiry! Our team will get back to you soon.' : status === 'error' ? 'We couldn’t send your enquiry. Please try again. If the problem continues, contact us by WhatsApp.' : 'We’ll be in touch about your campaign.'}</p><Button type="submit" className="button-gold" disabled={status === 'sending'}>{status === 'sending' ? 'SENDING...' : 'START A CONVERSATION'} <ArrowUpRight/></Button></div></form></div></section>;
 }
 
 function CustomCursor() {

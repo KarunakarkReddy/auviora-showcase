@@ -49,14 +49,34 @@ serve(async (req: Request) => {
 
     const body = parsedBody as Record<string, unknown>;
     const name = String(body.name ?? "").trim();
+    const company = String(body.company ?? "").trim();
     const phone = String(body.phone ?? "").trim();
     const email = String(body.email ?? "").trim();
     const subject = String(body.subject ?? "").trim();
     const message = String(body.message ?? "").trim();
 
-    if (!name || !phone) {
+    if (
+      name.length < 2 ||
+      name.length > 100 ||
+      phone.length < 6 ||
+      phone.length > 30 ||
+      company.length > 160 ||
+      email.length > 254 ||
+      subject.length > 240 ||
+      message.length > 2000 ||
+      (company.length > 0 && company.length < 2) ||
+      (subject.length > 0 && subject.length < 2) ||
+      (message.length > 0 && message.length < 5)
+    ) {
       return Response.json(
-        { error: "Name and phone are required" },
+        { error: "Please provide valid enquiry details" },
+        { status: 400, headers: corsHeaders },
+      );
+    }
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return Response.json(
+        { error: "Please provide a valid email address" },
         { status: 400, headers: corsHeaders },
       );
     }
@@ -73,6 +93,7 @@ serve(async (req: Request) => {
         const value of [
           RESEND_API_KEY,
           name,
+          company,
           phone,
           email,
           subject,
@@ -96,14 +117,17 @@ serve(async (req: Request) => {
     };
     const safe = (value: string) =>
       value.replace(/[&<>"']/g, (character) => htmlEscapes[character]);
+    const submittedAt = new Date().toISOString();
 
     const adminHtml = `
       <h2>New website enquiry</h2>
       <p><strong>Name:</strong> ${safe(name)}</p>
+      <p><strong>Company:</strong> ${safe(company || "Not provided")}</p>
       <p><strong>Phone:</strong> ${safe(phone)}</p>
       <p><strong>Email:</strong> ${safe(email || "Not provided")}</p>
       <p><strong>Requirement:</strong> ${safe(subject || "Not provided")}</p>
       <p><strong>Message:</strong><br>${safe(message || "Not provided").replace(/\n/g, "<br>")}</p>
+      <p><strong>Submitted at (UTC):</strong> ${submittedAt}</p>
     `;
 
     const sendEmail = async (
@@ -182,7 +206,7 @@ serve(async (req: Request) => {
 
     const adminResult = await sendEmail({
       from,
-      to: ["slnauviora@gmail.com"],
+      to: ["contact@slnauvioramedia.com"],
       subject: `New website enquiry from ${name}`,
       html: adminHtml,
       reply_to: email || undefined,

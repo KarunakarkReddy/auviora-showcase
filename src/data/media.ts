@@ -7,6 +7,8 @@ export const mediaLocations = [
     number: '01',
     name: 'BILEKAHALLI SIGNAL',
     addressLines: ['Malabar Gold Point', 'Bannerghatta Main Road', 'Bengaluru, Karnataka'],
+    mapUrl: 'https://maps.app.goo.gl/qRbYqAwdzSWYw71s8',
+    enquiryMessage: "Hello SLN Auviora Media! 👋\n\nI'm interested in booking the Bilekahalli Signal advertising space. Could you please provide more details about availability, pricing, ad duration, and booking procedures?",
     video: film1.url,
     poster: still1,
     note: null as string | null,
@@ -28,7 +30,7 @@ export const nonLedMedia = {
   unipoles: [
     { location: 'Bannerughatta road, begur road and electronic city road' },
   ],
-  holdings: [{ size: '30 × 30', availability: 'ALL' }],
+  Hoarding: [{ size: '30 × 30', availability: 'ALL' }],
   outdoorBoardings: { size: '10 × 50' },
 };
 
@@ -41,4 +43,4 @@ export const services = [
   'LARGE-FORMAT OUTDOOR ADVERTISING',
 ];
 
-export const upcomingLocations = ['SARJAPURA ROAD', 'KANKAPURA ROAD'];
+export const upcomingLocations = ['SARJAPURA ROAD', 'KANAKAPURA ROAD'];
