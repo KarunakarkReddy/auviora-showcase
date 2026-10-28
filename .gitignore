@@ -44,3 +44,5 @@ supabase/functions/**/.npmrc
 
 # Local SQL snippets
 supabase/snippets/
+.vercel
+.env*

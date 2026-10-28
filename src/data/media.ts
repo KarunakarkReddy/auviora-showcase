@@ -14,7 +14,7 @@ export const mediaLocations = [
       ['DISPLAY SIZE', '5760 mm × 5760 mm'],
       ['DISPLAY DIMENSION', '18.89 ft × 18.89 ft'],
       ['RESOLUTION', '1152 × 1152 px'],
-      ['DAILY PLAYTIME', '15 HOURS'],
+      ['DAILY PLAYTIME', '13 - 15 HOURS'],
       ['MEDIA TYPE', 'P5 Outdoor SMD LED'],
       ['LAMP TECHNOLOGY', 'High-quality Kinglight Lamps'],
       ['AD FORMAT', '10 Seconds / 15 Seconds'],
