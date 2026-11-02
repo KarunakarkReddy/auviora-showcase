@@ -43,7 +43,7 @@ export function FloatingContactBar() {
 export function Footer() {
   return <footer className="footer section-pad"><div className="footer-main">
     <div><Wordmark compact/><p className="footer-company">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</p><p>{companyData.tagline.toUpperCase()}</p></div>
-    <div className="footer-links"><span>EXPLORE</span>{siteNav.map(([name, href]) => <a href={href} key={name}>{name}</a>)}<Link to="/terms">TERMS & CONDITIONS</Link></div>
+    <div className="footer-links"><span>EXPLORE</span>{siteNav.map(([name, href]) => <a href={href} key={name}>{name}</a>)}<a href="/#gallery">OUR WORK</a><a href="/#services">ADVERTISING SERVICES</a><Link to="/terms">TERMS & CONDITIONS</Link></div>
     <div className="footer-links"><span>CONNECT</span><a href={`tel:${companyData.mobile}`}>{companyData.mobile} <ArrowUpRight size={14}/></a><p className="footer-info">{companyData.shortLocation}</p></div>
   </div><div className="footer-bottom"><span>© {new Date().getFullYear()} {companyData.name}</span><a href="/#top">BACK TO TOP ↑</a><span>MADE TO BE SEEN.</span></div></footer>;
 }

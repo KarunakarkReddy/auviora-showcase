@@ -1,17 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react';
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
-import { ArrowUpRight, ChevronLeft, ChevronRight, Menu, X, Plus, Minus } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import filmMain from '@/assets/sln-film-main.webm.asset.json';
-import stillMain from '@/assets/sln-film-main-poster.jpg.asset.json';
-import still1 from '@/assets/billboard-1.jpg.asset.json';
-import still2 from '@/assets/billboard-2.jpg.asset.json';
-import still3 from '@/assets/billboard-3.jpg.asset.json';
-import still4 from '@/assets/billboard-4.jpg.asset.json';
 import { companyData, siteNav } from '@/data/company';
-import { adFormats, mediaLocations, nonLedMedia, services, upcomingLocations } from '@/data/media';
 import { Footer, Wordmark } from '@/components/site-chrome';
+import { MediaLocationsSection } from '@/components/media-locations-section';
+import { IndustriesWeServe } from "@/components/industries-we-serve";
+import { HowItWorks } from "@/components/how-it-works";
+import { FrequentlyAskedQuestions } from "@/components/frequently-asked-questions";
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
@@ -26,7 +23,6 @@ export const Route = createFileRoute('/')({
 });
 
 const nav = siteNav;
-const stills = [still1, still2, still3, still4];
 const galleryImages: [{ src: string; alt: string }, ...{ src: string; alt: string }[]] = [
   { src: '/images/sln-main-live-pic.png', alt: 'LED billboard and roadside advertising in Bengaluru' },
   { src: '/images/road-media-live.JPG', alt: 'Road media billboards along a city street' },
@@ -48,20 +44,65 @@ const galleryImages: [{ src: string; alt: string }, ...{ src: string; alt: strin
   { src: '/images/gyantri3.jpg', alt: 'Roadside advertising gantry' },
 ];
 const fade = { initial: { opacity: 0, y: 32 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.18 }, transition: { duration: .85, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } };
+const mediaServices = [
+  { title: 'LED Outdoor Advertising', description: 'High-resolution P5 LED media at Bilekahalli Signal.', image: '/images/sln-main-live-pic.png', alt: 'SLN Auviora Media LED billboard at Bilekahalli Signal', featured: true, enquiryMessage: "Hi, I'm interested in LED Outdoor Advertising with SLN Auviora Media. Please share available locations, display specifications and pricing." },
+  { title: 'Road Media', description: 'Road media placements across key Bengaluru corridors.', image: '/images/road-media-live.JPG', alt: 'Roadside advertising media in Bengaluru', enquiryMessage: "Hi SLN Auviora Media, I'm interested in Road Media advertising on Bannerghatta Road, Bengaluru. Please share availability, pricing and campaign details." },
+  { title: 'Unipoles & Hoardings', description: 'Elevated formats and high-visibility boards along busy roads.', image: '/images/unipole.JPG', alt: 'Outdoor unipole advertising structure', enquiryMessage: "Hi, I'm interested in Unipole and Hoarding advertising across Bengaluru. Please share available locations, rates and booking details." },
+  { title: 'Gantries', description: 'Road-spanning media formats for clear roadside presence.', image: '/images/gyantri1.JPG', alt: 'Outdoor advertising gantry', enquiryMessage: "Hi, I'm interested in Gantry advertising on Bannerghatta Road / Begur Road. Please share availability and pricing." },
+  { title: 'Large Outdoor Hoardings', description: 'Scale-focused billboard opportunities for your campaign.', image: '/images/large-outdoor-hoardings1.jpg', alt: 'Large-format roadside billboard', enquiryMessage: "Hi, I'm interested in Large Outdoor Hoarding advertising near Electronic City Road / Bannerghatta Road. Please share details and pricing." },
+  { title: 'Mobile Billboards', description: 'Mobile billboard advertising to reach audiences across Bengaluru.', image: '/images/mobile_billboards.jpg', alt: 'Mobile billboards in Bengaluru', enquiryMessage: "Hi, I'm interested in Mobile Billboard advertising in Bengaluru. Please share packages, availability and pricing." },
+];
+const getMediaServiceWhatsAppUrl = (message: string) => {
+  const url = new URL(companyData.whatsapp);
+  url.searchParams.set('text', message);
+  return url.toString();
+};
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const reducedMotion = useReducedMotion();
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 60);
     window.addEventListener('scroll', update, { passive: true }); update();
     return () => window.removeEventListener('scroll', update);
   }, []);
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [open]);
   return <header className={`site-header ${scrolled || open ? 'site-header-scrolled' : ''}`}>
     <Wordmark />
     <nav className="desktop-nav" aria-label="Main navigation">{nav.map(([name, href]) => <a key={name} href={href}>{name}</a>)}</nav>
-    <Button type="button" variant="ghost" size="icon" className="menu-toggle" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</Button>
-    {open && <nav className="mobile-nav" aria-label="Mobile navigation">{nav.map(([name, href], i) => <a key={name} href={href} onClick={() => setOpen(false)}><span>0{i + 1}</span>{name}<ArrowUpRight size={20}/></a>)}</nav>}
+    <a className="header-quote" href="#contact">GET A MEDIA QUOTE <ArrowUpRight size={15}/></a>
+    <Button type="button" variant="ghost" size="icon" className="menu-toggle" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(current => !current)}>{open ? <X /> : <Menu />}</Button>
+    <AnimatePresence>
+      {open && (
+        <motion.nav
+          id="mobile-navigation"
+          className="mobile-nav"
+          aria-label="Mobile navigation"
+          aria-hidden={!open}
+          inert={!open}
+          initial={reducedMotion ? false : { opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: reducedMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {nav.map(([name, href], i) => <a key={name} href={href} onClick={() => setOpen(false)}><span>0{i + 1}</span>{name}<ArrowUpRight size={20}/></a>)}
+          <a className="mobile-nav-quote" href="#contact" onClick={() => setOpen(false)}>GET A MEDIA QUOTE <ArrowUpRight size={19}/></a>
+        </motion.nav>
+      )}
+    </AnimatePresence>
   </header>;
 }
 
@@ -93,30 +134,125 @@ function Video({ src, poster, eager = false, className = '', style }: { src: str
 
 function Hero() {
   const reduced = useReducedMotion();
-  const [hideText, setHideText] = useState(false);
-  useEffect(() => { const t = window.setTimeout(() => setHideText(true), 6000); return () => window.clearTimeout(t); }, []);
-  return <section className="hero" id="top" aria-label="SLN Auviora Media introduction">
-  <video
-    className="hero-video"
-    autoPlay
-    muted
-    loop
-    playsInline
-  >
-    <source src="/videos/drone-main-1080p.mp4" type="video/mp4" />
-  </video> 
-    <div className="hero-shade" />
-    <div className={`hero-inner ${hideText ? 'hero-text-hidden' : ''}`}>
-      <motion.p className="eyebrow hero-eyebrow hero-fade-text" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .4, duration: .8 }}>OUTDOOR MEDIA, REIMAGINED <span className="eyebrow-rule"/></motion.p>
-      <h1 className="hero-title hero-fade-text">{['MAKE YOUR BRAND', 'IMPOSSIBLE', 'TO MISS.'].map((line, i) => <span className="hero-line" key={line}><motion.span initial={reduced ? false : { y: '110%' }} animate={{ y: 0 }} transition={{ delay: .45 + i * .16, duration: 1, ease: [0.22, 1, 0.36, 1] }}>{line}</motion.span></span>)}</h1>
-      <motion.div className="hero-bottom" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1, duration: .8 }}>
-        <p className="hero-fade-text">Premium Outdoor Advertising<br/>& Billboard Media</p>
-        <div className="hero-actions"><Button asChild className="button-gold"><a href="#media">EXPLORE OUR MEDIA <ArrowUpRight/></a></Button><Button asChild variant="outline" className="button-outline"><a href="#contact">CONTACT US <ArrowUpRight/></a></Button></div>
-      </motion.div>
-    </div>
-    <a className="scroll-cue" href="#statement"><span>SCROLL TO EXPLORE</span><span className="scroll-line"/></a>
-    <span className="hero-index">01 / 10</span>
-  </section>;
+  return (
+    <section className="hero" id="top" aria-label="SLN Auviora Media introduction">
+      <img
+        className="hero-image"
+        src="/images/sln-main-live-pic.png"
+        alt=""
+        width={1447}
+        height={1087}
+        fetchPriority="high"
+        decoding="async"
+      />
+      <video
+        className="experience-video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="/images/sln-main-live-pic.png"
+        aria-hidden="true"
+      >
+        <source src="/videos/drone-main-1080p.mp4" type="video/mp4" />
+      </video>
+      <div className="hero-shade" />
+      <div className="hero-inner">
+        <motion.p
+          className="eyebrow hero-eyebrow"
+          initial={reduced ? false : { opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: reduced ? 0 : 0.2, duration: reduced ? 0 : 0.65 }}
+        >
+          <span className="hero-eyebrow-dot" aria-hidden="true" />
+          OUTDOOR MEDIA <span aria-hidden="true">/</span> BRAND EXPERIENCES
+        </motion.p>
+        <h1 className="hero-title">
+          <motion.span
+            className="hero-line"
+            initial={reduced ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: reduced ? 0 : 0.3,
+              duration: reduced ? 0 : 0.7,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            MAKE YOUR
+          </motion.span>
+          <motion.span
+            className="hero-line"
+            initial={reduced ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: reduced ? 0 : 0.42,
+              duration: reduced ? 0 : 0.7,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            BRAND <em>IMPOSSIBLE</em>
+          </motion.span>
+          <motion.span
+            className="hero-line"
+            initial={reduced ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: reduced ? 0 : 0.54,
+              duration: reduced ? 0 : 0.7,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            TO <em>MISS.</em>
+          </motion.span>
+        </h1>
+        <div className="hero-bottom">
+          <motion.p
+            initial={reduced ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: reduced ? 0 : 0.68, duration: reduced ? 0 : 0.65 }}
+          >
+            Transform your brand visibility with premium outdoor advertising solutions, strategic
+            media locations and impactful LED billboard experiences.
+          </motion.p>
+          <div className="hero-actions">
+            <motion.div
+              initial={reduced ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: reduced ? 0 : 0.82, duration: reduced ? 0 : 0.55 }}
+            >
+              <Button asChild className="button-gold">
+                <a href="#media">
+                  EXPLORE OUR MEDIA <ArrowUpRight aria-hidden="true" />
+                </a>
+              </Button>
+            </motion.div>
+            <motion.div
+              initial={reduced ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: reduced ? 0 : 0.94, duration: reduced ? 0 : 0.55 }}
+            >
+              <Button asChild variant="outline" className="button-outline">
+                <a href="#contact">
+                  GET A MEDIA QUOTE <ArrowUpRight aria-hidden="true" />
+                </a>
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+      <aside className="hero-media-note" aria-label="Featured media location">
+        <span className="hero-media-note-label">FEATURED LED LOCATION</span>
+        <strong>BILEKAHALLI SIGNAL</strong>
+        <span>Bannerghatta Main Road · Bengaluru</span>
+        <span className="hero-media-note-spec">P5 OUTDOOR LED</span>
+      </aside>
+      <a className="scroll-cue" href="#statement">
+        <span>SCROLL TO EXPLORE</span>
+        <span className="scroll-line" />
+      </a>
+    </section>
+  );
 }
 
 function Statement() {
@@ -124,170 +260,138 @@ function Statement() {
 }
 
 
-const marqueeBrands = ['UrbanEdge Retail', 'Horizon Foods', 'StyleZone', 'TechVibe', 'Namma Motors', 'Brigade Group', 'Royal Enfield', 'Decathlon'];
+const mediaPillars = ['LED SCREENS', 'ROADSIDE MEDIA', 'UNIPOLES', 'HOARDINGS', 'GANTRIES', 'LARGE FORMAT'];
 function BrandMarquee() {
-  const row = (hidden: boolean) => <ul className="marquee-row" aria-hidden={hidden || undefined}>{marqueeBrands.map(b => <li key={b}>{b}<span className="marquee-sep" aria-hidden="true">✦</span></li>)}</ul>;
-  return <div className="brand-marquee"><p className="marquee-heading">Trusted by ambitious brands across India</p><div className="marquee-viewport"><div className="marquee-track" style={{ '--marquee-duration': '46s' } as CSSProperties}>{row(false)}{row(true)}</div></div></div>;
+  const row = (hidden: boolean) => <ul className="marquee-row" aria-hidden={hidden || undefined}>{mediaPillars.map(item => <li key={item}>{item}<span className="marquee-sep" aria-hidden="true">✦</span></li>)}</ul>;
+  return <div className="brand-marquee"><p className="marquee-heading">Outdoor formats designed to meet the city in motion</p><div className="marquee-viewport"><div className="marquee-track" style={{ '--marquee-duration': '46s' } as CSSProperties}>{row(false)}{row(true)}</div></div></div>;
 }
 
 function Experience() {
-  return <section className="experience" aria-label="Outdoor media experience"><Video src="/videos/mid-video-1080p.mp4" poster={still2.url} className="experience-video"/><div className="experience-shade"/><div className="experience-content section-pad"><span className="eyebrow">03 / THE EXPERIENCE</span><motion.h2 {...fade} className="display">VISIBILITY<br/><em>WITHOUT</em><br/>INTERRUPTION.</motion.h2><motion.p {...fade} className="experience-quote">Your audience is already on the road.<br/>We put your brand in their path.</motion.p><div className="experience-features">{[['01','HIGH VISIBILITY','Strategic roadside placements.'],['02','LARGE FORMAT','Advertising that commands attention.'],['03','REAL-WORLD REACH','Brand exposure across high-traffic environments.']].map(([n,t,c]) => <motion.div {...fade} key={n} className="experience-feature"><span>{n}</span><h3>{t}</h3><p>{c}</p></motion.div>)}</div></div></section>;
-}
-
-function Media() {
-  const getLocationWhatsAppUrl = (message: string) => {
-    const url = new URL(companyData.whatsapp);
-    url.searchParams.set('text', message);
-    return url.toString();
-  };
-
-  return <section id="media" className="media"><div className="section-pad"><div className="section-heading"><span className="eyebrow">04 / MEDIA</span><motion.h2 {...fade} className="display">MEDIA<span className="media-title-period">.</span></motion.h2></div>
-    <div className="media-subheading"><span className="eyebrow">01 / LED OUTDOOR MEDIA</span><motion.h3 {...fade} className="display">LED OUTDOOR<br/><em>MEDIA.</em></motion.h3><p>High-resolution P5 outdoor LED advertising positioned for high-visibility roadside exposure.</p></div>
-    <div className="led-support"><motion.p {...fade}>LED displays provide visibility to commuters, vehicles, Metro passengers and pedestrians.</motion.p><motion.p {...fade}>Premium P5 Outdoor SMD LED using high-quality Kinglight Lamps, delivering bright, sharp, and reliable outdoor display performance.</motion.p></div>
-    {mediaLocations.map(loc => <article key={loc.id} className="led-location">
-      <div className="led-media"><Video src={loc.video} poster={loc.poster} className="panel-video"/><div className="panel-shade"/><div className="led-title"><span className="eyebrow">LOCATION {loc.number}</span><div className="led-title-heading"><h3 className="display">{loc.name}</h3>{loc.mapUrl && <Button asChild variant="outline" className="button-outline maps-link"><a href={loc.mapUrl} target="_blank" rel="noopener noreferrer"><svg className="maps-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M12 2a8 8 0 0 0-8 8c0 5.2 8 12 8 12s8-6.8 8-12a8 8 0 0 0-8-8Z"/><path fill="#34A853" d="M4.6 6.7A8 8 0 0 0 4 10c0 2.8 2.7 6.1 5 8.7l2-5.3Z"/><path fill="#FBBC04" d="M19.4 6.7A8 8 0 0 1 20 10c0 2.8-2.7 6.1-5 8.7l-2-5.3Z"/><path fill="#EA4335" d="M12 2a8 8 0 0 0-7.4 4.9l5.8 6.1L12 8l2-5.7A8 8 0 0 0 12 2Z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg> OPEN IN GOOGLE MAPS</a></Button>}</div><p>{loc.addressLines.map(l => <span key={l}>{l}<br/></span>)}</p></div></div>
-      <div className="led-specs">{loc.note && <span className="led-note">{loc.note}</span>}<dl>{loc.specs.map(([k, v], i) => <motion.div key={k} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * .08, duration: .7 }}><dt>{k}</dt><dd>{v}</dd></motion.div>)}</dl><Button asChild variant="ghost" className="text-link"><a href={getLocationWhatsAppUrl(loc.enquiryMessage)} target="_blank" rel="noopener noreferrer">ENQUIRE ABOUT THIS SPACE <ArrowUpRight/></a></Button></div>
-    </article>)}
-    <div className="upcoming"><span className="eyebrow">UPCOMING</span><div className="upcoming-list">{upcomingLocations.map((l, i) => <motion.div {...fade} key={l} className="upcoming-item"><span>0{i + 1}</span><h3 className="display">{l}</h3></motion.div>)}</div><p>New outdoor advertising opportunities coming soon.</p></div>
-    <div className="ad-formats"><span className="eyebrow">ADVERTISING OPTIONS</span><div className="ad-format-row">{adFormats.map(f => <motion.div {...fade} key={f}><strong className="display">{f.split(' ')[0]}</strong><span>SECOND FORMAT</span></motion.div>)}</div><p>Flexible 10-second and 15-second advertising formats.</p></div>
-    <div className="led-timings"><span className="eyebrow">LED DISPLAY TIMINGS</span><dl><div><dt>MORNING SESSION</dt><dd>7:00 AM – 1:00 PM</dd></div><div><dt>AFTERNOON / EVENING SESSION</dt><dd>2:00 PM – 11:00 PM</dd></div><div><dt>PLAYBACK FREQUENCY</dt><dd>Approx. once every minute</dd></div></dl><p>Scheduled across 14 display hours, with a break from 1:00 PM to 2:00 PM. Your brand stays in rotation throughout our scheduled display hours, giving your campaign repeated visibility to commuters and pedestrians.</p></div></div>
-    <NonLed />
-  </section>;
-}
-
-type InventorySlide = { src: string; alt: string };
-type InventoryCard = { title: string; images: [InventorySlide, ...InventorySlide[]]; location?: string };
-
-function InventorySlideshow({ title, images, location }: { title: string; images: [InventorySlide, ...InventorySlide[]]; location?: string | undefined }) {
-  const [index, setIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-
-  useEffect(() => {
-    if (isHovered || images.length < 2) return;
-    const timer = window.setInterval(() => setIndex(current => (current + 1) % images.length), 3000);
-    return () => window.clearInterval(timer);
-  }, [images.length, isHovered]);
-
-  const step = (direction: number) => {
-    setIndex(current => (current + direction + images.length) % images.length);
-  };
-
-  const currentImage = images[index] ?? images[0];
-
-  return (
-    <div
-      className="inventory-image"
-      aria-label={`${title} photographs`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <img src={currentImage.src} alt={currentImage.alt} />
-      {location && <small className="inventory-location">{location}</small>}
-      <button
-        type="button"
-        className="inventory-slideshow-arrow inventory-slideshow-prev"
-        aria-label={`Previous ${title} image`}
-        onClick={() => step(-1)}
-      >
-        <ChevronLeft size={22} />
-      </button>
-      <button
-        type="button"
-        className="inventory-slideshow-arrow inventory-slideshow-next"
-        aria-label={`Next ${title} image`}
-        onClick={() => step(1)}
-      >
-        <ChevronRight size={22} />
-      </button>
-    </div>
-  );
-}
-
-function NonLed() {
-  const inventoryCards: InventoryCard[] = [
-    {
-      title: 'ROAD MEDIA',
-      images: [
-        { src: '/images/road-media-live.JPG', alt: 'Road media advertising along Bannerghatta Road' },
-        { src: '/images/road-media-live2.JPG', alt: 'Roadside media advertising in Bengaluru' },
-      ],
-      location: 'BANNERGHATTA ROAD',
-    },
-    {
-      title: 'UNIPOLES AND HOARDINGS',
-      images: [
-        { src: '/images/unipole.JPG', alt: 'Unipole advertising boards along a road' },
-        { src: '/images/hoaldings1.JPG', alt: 'Outdoor hoardings beside a road' },
-        { src: '/images/hoaldings2.JPG', alt: 'Large roadside hoarding' },
-        { src: '/images/hoaldings3.JPG', alt: 'Outdoor advertising hoardings' },
-      ],
-    },
-    {
-      title: 'GANTRIES',
-      images: [
-        { src: '/images/gyantri1.JPG', alt: 'Outdoor gantry advertising' },
-        { src: '/images/gyantri2.jpg', alt: 'Gantry advertising on a city road' },
-        { src: '/images/gyantri3.jpg', alt: 'Roadside advertising gantry' },
-      ],
-    },
-    {
-      title: 'LARGE OUTDOOR HOARDINGS',
-      images: [
-        { src: '/images/hoaldings.JPG', alt: 'Large outdoor hoardings' },
-        { src: '/images/large-outdoor-hoardings1.jpg', alt: 'Large outdoor billboard hoarding' },
-        { src: '/images/large-outdoor-hoardings2.jpg', alt: 'Large-format roadside hoarding' },
-        { src: '/images/outdoor-hoardings.JPG', alt: 'Outdoor billboard hoardings along a street' },
-        { src: '/images/outdoor-hoardings1.JPG', alt: 'Large outdoor billboard in an urban setting' },
-      ],
-    },
-    {
-      title: 'ELEVATED AND STATIC MOBILE BILLBOARDS',
-      images: [
-        { src: '/images/mobile_billboards.jpg', alt: 'Elevated and static mobile billboards in Bangalore' },
-        { src: '/images/mobile_billboards2.jpg', alt: 'Mobile billboard advertising on a city road' },
-      ],
-    },
-  ];
-
-  return <div className="non-led section-pad"><div className="media-subheading"><span className="eyebrow">02 / NON-LED OUTDOOR MEDIA</span><motion.h3 {...fade} className="display">NON-LED<br/><em>OUTDOOR MEDIA.</em></motion.h3><p>Traditional outdoor advertising formats designed for high-visibility roadside brand presence.</p></div>
-    <div className="inventory">
-      {inventoryCards.map(c => <motion.article {...fade} className="inventory-group" key={c.title}>
-        <InventorySlideshow title={c.title} images={c.images} location={c.location} />
-        <div className="inventory-content">
-  <h4>{c.title}</h4>
-  <p className="inventory-address">
-    {c.title === 'ROAD MEDIA' && 'Bannerghatta Road - 560083'}
-    {c.title === 'UNIPOLES AND HOARDINGS' && 'Bannerghatta Road, Begur Road and Electronic City Road'}
-    {c.title === 'GANTRIES' && 'Bannerghatta Road and Begur Road'}
-    {c.title === 'LARGE OUTDOOR HOARDINGS' && 'Electronic City Road and Bannerghatta Road'}
-    {c.title === 'ELEVATED AND STATIC MOBILE BILLBOARDS' && 'Bangalore'}
-  </p>
-</div>
-      </motion.article>)}
-    </div>
-    
-  </div>;
+  return <section className="experience" aria-label="Outdoor media experience"><Video src="/videos/mid-video-1080p.mp4" poster="/images/sln-main-live-pic.png" className="experience-video"/><div className="experience-shade"/><div className="experience-content section-pad"><span className="eyebrow">03 / THE EXPERIENCE</span><motion.h2 {...fade} className="display">VISIBILITY<br/><em>WITHOUT</em><br/>INTERRUPTION.</motion.h2><motion.p {...fade} className="experience-quote">Your audience is already on the road.<br/>We put your brand in their path.</motion.p><div className="experience-features">{[['01','HIGH VISIBILITY','Strategic roadside placements.'],['02','LARGE FORMAT','Advertising that commands attention.'],['03','REAL-WORLD REACH','Brand exposure across high-traffic environments.']].map(([n,t,c]) => <motion.div {...fade} key={n} className="experience-feature"><span>{n}</span><h3>{t}</h3><p>{c}</p></motion.div>)}</div></div></section>;
 }
 
 function Services() {
-  const [active, setActive] = useState<number | null>(null);
-  return <section id="services" className="services section-pad"><div className="section-heading"><span className="eyebrow">06 / OUR PRACTICE</span><motion.h2 {...fade} className="display">WHAT <em>WE DO.</em></motion.h2></div><div className="services-list">{services.map((item,i) => <div key={item} className={`service-row ${active === i ? 'service-active' : ''}`} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}><span>{String(i+1).padStart(2,'0')}</span><h3>{item}</h3><span className="service-icon">{active === i ? <Minus size={25}/> : <Plus size={25}/>}</span><div className="service-image" style={{ backgroundImage: `url(${stills[i%4]?.url ?? still1.url})` }}/></div>)}</div></section>;
+  const reducedMotion = useReducedMotion();
+  return (
+    <section id="services" className="services section-pad" aria-labelledby="services-heading">
+      <div className="section-heading">
+        <span className="eyebrow">06 / OUR PRACTICE</span>
+        <motion.h2 {...fade} className="display" id="services-heading">
+          MEDIA <em>SOLUTIONS.</em>
+        </motion.h2>
+        <p>Outdoor formats matched to the places, audiences and scale your campaign needs.</p>
+      </div>
+      <div className="service-bento">
+        {mediaServices.map((service, index) => (
+          <motion.a
+            className={`service-card${service.featured ? " service-card--featured" : ""}`}
+            href={getMediaServiceWhatsAppUrl(service.enquiryMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Enquire about ${service.title} via WhatsApp`}
+            key={service.title}
+            initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.14 }}
+            transition={{
+              duration: reducedMotion ? 0 : 0.6,
+              delay: reducedMotion ? 0 : (index % 3) * 0.08,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            <img src={service.image} alt={service.alt} loading="lazy" decoding="async" />
+            <span className="service-card-shade" aria-hidden="true" />
+            <span className="service-card-number">{String(index + 1).padStart(2, "0")}</span>
+            <span className="service-card-copy">
+              <span className="service-card-title">{service.title}</span>
+              <span className="service-card-description">{service.description}</span>
+            </span>
+            <span className="service-card-arrow" aria-hidden="true"><ArrowUpRight size={19}/></span>
+          </motion.a>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 function Gallery() {
-  const [index, setIndex] = useState(0);
-  const [failedIndex, setFailedIndex] = useState<number | null>(null);
-  const timer = useRef<number | undefined>(undefined);
-  const reduced = useReducedMotion();
-  const count = galleryImages.length;
-  const startTimer = () => {
-    window.clearInterval(timer.current);
-    if (!reduced) timer.current = window.setInterval(() => setIndex(i => (i + 1) % count), 3000);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const selectedImage = galleryImages[selectedIndex];
+
+  useEffect(() => {
+    const nextImage = new Image();
+    nextImage.src = galleryImages[(selectedIndex + 1) % galleryImages.length].src;
+  }, [selectedIndex]);
+
+  useEffect(() => {
+    if (isHovered) return;
+    const intervalId = window.setInterval(() => {
+      setSelectedIndex(index => (index + 1) % galleryImages.length);
+    }, 2500);
+    return () => window.clearInterval(intervalId);
+  }, [isHovered]);
+
+  const showAdjacentImage = (direction: number) => {
+    setSelectedIndex(index => (index + direction + galleryImages.length) % galleryImages.length);
   };
-  useEffect(() => { startTimer(); return () => window.clearInterval(timer.current); }, [reduced, count]);
-  const step = (dir: number) => { setIndex(i => (i + dir + count) % count); startTimer(); };
-  const currentImage = galleryImages[index] ?? galleryImages[0];
-  return <section id="gallery" className="gallery section-pad"><div className="gallery-header"><div><span className="eyebrow">05 / GALLERY</span><motion.h2 {...fade} className="display">WHERE BRANDS<br/><em>MEET THE CITY.</em></motion.h2></div><p>Outdoor advertising environments<br/>in motion and in view.</p></div><div className="gallery-stage"><div className="gallery-image">{failedIndex === index ? <div role="status" style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', color: 'var(--soft)' }}>Image unavailable</div> : <img key={index} className="gallery-fade" src={currentImage.src} alt={currentImage.alt} onError={() => setFailedIndex(index)}/>}<button type="button" className="gallery-arrow gallery-prev" aria-label="Previous image" onClick={() => step(-1)}><ChevronLeft size={26}/></button><button type="button" className="gallery-arrow gallery-next" aria-label="Next image" onClick={() => step(1)}><ChevronRight size={26}/></button></div><p className="gallery-counter" aria-live="polite">{String(index + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</p></div></section>;
+
+  return (
+    <section id="gallery" className="gallery" aria-labelledby="gallery-heading">
+      <div className="gallery-header">
+        <div>
+          <span className="eyebrow">05 / GALLERY</span>
+          <motion.h2 {...fade} className="display" id="gallery-heading">
+            WHERE BRANDS<br /><em>MEET THE CITY.</em>
+          </motion.h2>
+        </div>
+        <p>Real outdoor advertising environments and media locations in Bengaluru.</p>
+      </div>
+      <div
+        className="gallery-carousel"
+        role="region"
+        aria-label="Gallery image carousel"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="gallery-carousel-frame" aria-live="off">
+          <img
+            key={selectedImage.src}
+            className="gallery-carousel-image"
+            src={selectedImage.src}
+            alt={selectedImage.alt}
+            decoding="async"
+            fetchPriority="high"
+          />
+          <button
+            type="button"
+            className="gallery-arrow gallery-prev"
+            aria-label="Previous gallery image"
+            onClick={() => showAdjacentImage(-1)}
+          >
+            <ChevronLeft size={24} aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            className="gallery-arrow gallery-next"
+            aria-label="Next gallery image"
+            onClick={() => showAdjacentImage(1)}
+          >
+            <ChevronRight size={24} aria-hidden="true" />
+          </button>
+        </div>
+        <div
+          className="gallery-carousel-footer"
+          aria-live="off"
+          aria-label={`Image ${String(selectedIndex + 1).padStart(2, '0')} of ${String(galleryImages.length).padStart(2, '0')}`}
+        >
+          <span>{String(selectedIndex + 1).padStart(2, '0')}</span>
+          <span aria-hidden="true">/</span>
+          <span>{String(galleryImages.length).padStart(2, '0')}</span>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function WhyOutdoor() {
@@ -296,7 +400,7 @@ function WhyOutdoor() {
 }
 
 function About() {
-  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE MAKE<br/><em>BRANDS</em><br/>VISIBLE.</motion.h2><div className="about-copy"><img className="brand-poster" src="/images/sln-logo-side-final.png" alt="SLN Auviora Media blue and cyan brand wordmark" width={460} height={228} loading="lazy"/><p>SLN Auviora Media Private Limited provides outdoor advertising solutions through high-resolution LED displays, roadside media, unipoles, Hoarding and large-format outdoor advertising spaces.</p><p>With strategically positioned media formats, SLN helps brands communicate with audiences across roads, intersections and high-visibility urban environments.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
+  return <section id="about" className="about section-pad"><span className="eyebrow">09 / THE COMPANY</span><div className="about-layout"><motion.h2 {...fade} className="display">WE TURN<br/><em>LOCATIONS</em><br/>INTO BRAND<br/>EXPERIENCES.</motion.h2><div className="about-copy"><img className="brand-poster" src="/images/sln-logo-side-final.png" alt="SLN Auviora Media blue and cyan brand wordmark" width={460} height={228} loading="lazy"/><p>SLN Auviora Media helps brands connect with audiences through strategic outdoor advertising opportunities, premium LED displays and high-visibility media locations.</p><p>From roadside media to large-format outdoor advertising, our team helps businesses find the right spaces to put their brand in view.</p><div className="about-signature">SLN AUVIORA MEDIA<br/>PRIVATE LIMITED</div></div></div></section>;
 }
 
 function Contact() {
@@ -319,8 +423,15 @@ function Contact() {
           company: String(data.get('company') || '').trim(),
           phone: String(data.get('phone') || '').trim(),
           email: String(data.get('email') || '').trim(),
-          subject: String(data.get('requirement') || '').trim(),
-          message: String(data.get('message') || '').trim(),
+          subject: [
+            String(data.get('requirement') || '').trim(),
+            String(data.get('format') || '').trim(),
+          ].filter(Boolean).join(' · '),
+          message: [
+            String(data.get('message') || '').trim(),
+            `Preferred location: ${String(data.get('location') || 'No preference').trim()}`,
+            `Campaign duration: ${String(data.get('duration') || 'To be discussed').trim()}`,
+          ].join('\n\n'),
         }),
       });
       const result: unknown = await response.json();
@@ -345,7 +456,7 @@ function Contact() {
       submissionInProgress.current = false;
     }
   }
-  return <section id="contact" className="contact section-pad"><div className="contact-top"><span className="eyebrow">10 / GET IN TOUCH</span><span className="small-meta">YOUR NEXT CAMPAIGN STARTS HERE</span></div><div className="contact-layout"><div><motion.h2 {...fade} className="display">LET'S PUT<br/>YOUR BRAND<br/><em>ON THE ROAD.</em></motion.h2><p>Tell us about your campaign and we'll help you identify the right outdoor media opportunity.</p><div className="contact-details"><strong>{companyData.name}</strong><a href={`tel:${companyData.mobile}`}>MOBILE · {companyData.mobile}</a><address>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</address></div><div className="contact-ctas"><Button asChild className="button-gold"><a href={`tel:${companyData.mobile}`}>CALL NOW <ArrowUpRight/></a></Button><Button asChild variant="outline" className="button-outline"><a href={companyData.whatsapp} target="_blank" rel="noopener noreferrer">SEND ENQUIRY <ArrowUpRight/></a></Button></div></div><form id="enquiry" className="contact-form" onSubmit={submit}><div className="form-pair"><label>NAME <input name="name" type="text" required minLength={2} maxLength={100} placeholder="Your name"/></label><label>COMPANY <input name="company" type="text" minLength={2} maxLength={160} placeholder="Company name"/></label></div><div className="form-pair"><label>PHONE <input name="phone" type="tel" required minLength={6} maxLength={30} placeholder="Phone number"/></label><label>EMAIL <input name="email" type="email" maxLength={254} placeholder="Email address"/></label></div><label>CAMPAIGN / REQUIREMENT <input name="requirement" type="text" minLength={2} maxLength={240} placeholder="Tell us what you have in mind"/></label><label>MESSAGE <textarea name="message" minLength={5} maxLength={2000} rows={3} placeholder="A little more about your campaign"/></label><div className="form-bottom"><p role="status" aria-live="polite">{status === 'sent' ? 'Thank you for your enquiry! Our team will get back to you soon.' : status === 'error' ? 'We couldn’t send your enquiry. Please try again. If the problem continues, contact us by WhatsApp.' : 'We’ll be in touch about your campaign.'}</p><Button type="submit" className="button-gold" disabled={status === 'sending'}>{status === 'sending' ? 'SENDING...' : 'START A CONVERSATION'} <ArrowUpRight/></Button></div></form></div></section>;
+  return <section id="contact" className="contact section-pad"><div className="contact-top"><span className="eyebrow">10 / GET IN TOUCH</span><span className="small-meta">YOUR NEXT CAMPAIGN STARTS HERE</span></div><div className="contact-layout"><div><motion.h2 {...fade} className="display">LET'S PUT<br/>YOUR BRAND<br/><em>ON THE ROAD.</em></motion.h2><p>Have a campaign in mind? Let's find the right outdoor advertising opportunity for your brand.</p><div className="contact-details"><strong>{companyData.name}</strong><a href={`tel:${companyData.mobile}`}>MOBILE · {companyData.mobile}</a><address>{companyData.addressLines.map(l => <span key={l}>{l}<br/></span>)}</address></div><div className="contact-ctas"><Button asChild className="button-gold"><a href={`tel:${companyData.mobile}`}>CALL NOW <ArrowUpRight/></a></Button><Button asChild variant="outline" className="button-outline"><a href={companyData.whatsapp} target="_blank" rel="noopener noreferrer">SEND ENQUIRY <ArrowUpRight/></a></Button></div></div><form id="enquiry" className="contact-form" onSubmit={submit}><div className="form-pair"><label>FULL NAME <input name="name" type="text" required minLength={2} maxLength={100} placeholder="Your name"/></label><label>COMPANY <input name="company" type="text" minLength={2} maxLength={160} placeholder="Company name"/></label></div><div className="form-pair"><label>PHONE <input name="phone" type="tel" required minLength={6} maxLength={30} placeholder="Phone number"/></label><label>EMAIL <input name="email" type="email" maxLength={254} placeholder="Email address"/></label></div><div className="form-pair"><label>PREFERRED ADVERTISING FORMAT <select name="format" defaultValue=""><option value="">Select a format</option><option>LED outdoor advertising</option><option>Roadside advertising</option><option>Unipole advertising</option><option>Hoarding or gantry</option><option>Other outdoor media</option></select></label><label>PREFERRED LOCATION <select name="location" defaultValue=""><option value="">No preference yet</option><option>Bilekahalli Signal, Bannerghatta Main Road</option><option>Sarjapura Road (upcoming)</option><option>Kanakapura Road (upcoming)</option><option>Other / please advise</option></select></label></div><div className="form-pair"><label>CAMPAIGN DURATION <input name="duration" type="text" maxLength={120} placeholder="For example, 2 weeks"/></label><label>CAMPAIGN / REQUIREMENT <input name="requirement" type="text" minLength={2} maxLength={240} placeholder="What are you looking to promote?"/></label></div><label>MESSAGE <textarea name="message" minLength={5} maxLength={2000} rows={3} placeholder="Share more about your campaign"/></label><div className="form-bottom"><p role="status" aria-live="polite">{status === 'sent' ? 'Thank you for your enquiry! Our team will get back to you soon.' : status === 'error' ? 'We couldn’t send your enquiry. Please try again. If the problem continues, contact us by WhatsApp.' : 'We’ll be in touch about your campaign.'}</p><Button type="submit" className="button-gold" disabled={status === 'sending'}>{status === 'sending' ? 'SENDING...' : 'START A CONVERSATION'} <ArrowUpRight/></Button></div></form></div></section>;
 }
 
 function CustomCursor() {
@@ -366,5 +477,5 @@ function ScrollProgress() {
 }
 
 function Home() {
-  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><Experience/><Media/><Gallery/><Services/><WhyOutdoor/><About/><Contact/></main><Footer/></>;
+  return <><ScrollProgress/><CustomCursor/><Navbar/><main><Hero/><Statement/><Experience/><MediaLocationsSection/><Gallery/><Services/><WhyOutdoor/><IndustriesWeServe/><HowItWorks/><About/><FrequentlyAskedQuestions/><Contact/></main><Footer/></>;
 }

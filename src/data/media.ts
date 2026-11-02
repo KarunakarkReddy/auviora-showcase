@@ -20,7 +20,7 @@ export const mediaLocations = [
       ['MEDIA TYPE', 'P5 Outdoor SMD LED'],
       ['LAMP TECHNOLOGY', 'High-quality Kinglight Lamps'],
       ['AD FORMAT', '10 Seconds / 15 Seconds'],
-    ],
+    ] satisfies [string, string][],
   },
 ];
 
